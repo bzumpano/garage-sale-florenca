@@ -70,3 +70,4 @@ gem "devise", "~> 4.9"
 gem "kaminari", "~> 1.2"
 
 gem 'pg', '>= 1.5', group: [:production, :development]
+gem 'aws-sdk-s3', '>= 1.114', require: false
