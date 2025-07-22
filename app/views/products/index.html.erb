@@ -3,8 +3,19 @@
 <% content_for :title, "Products" %>
 
 <h1><%= t('products.index.title') %></h1>
+<% if user_signed_in? && current_user.admin? %>
+  <div style="margin-bottom: 1rem;">
+    <%= link_to raw('<i class="fa-solid fa-plus" style="margin-right:0.5em;"></i>' + t('products.index.new')), new_product_path, class: 'button' %>
+  </div>
+<% end %>
 <div id="products-list">
-  <%= render @products %>
+  <% if @products.any? %>
+    <%= render @products %>
+  <% else %>
+    <div class="empty-state">
+      <%= t('products.index.no_items', default: 'Nenhum item disponível.') %>
+    </div>
+  <% end %>
 </div>
 <%= paginate @products, remote: true %>
 
