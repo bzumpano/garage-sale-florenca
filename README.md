@@ -179,3 +179,16 @@ Heroku will deploy and use S3 for all file uploads in production.
 - Deploy
 
 If you want, I can check or update your `storage.yml` and `production.rb` for you—just ask!
+
+## Image Processing Requirements
+
+### Local Development (macOS/Homebrew)
+To enable ActiveStorage image variants (thumbnails, resizing, etc.), you must install [libvips](https://libvips.github.io/libvips/):
+
+```bash
+brew install vips
+```
+
+### Heroku Deployment
+- Heroku's default stack already includes `libvips` and all required image libraries for ActiveStorage.
+- **No manual installation is needed** unless you use a custom Dockerfile (in which case, add `libvips` to your image).

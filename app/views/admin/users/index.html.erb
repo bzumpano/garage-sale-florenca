@@ -1,20 +1,20 @@
-<h1><%= t('admin.users.title') %></h1>
-<%= link_to t('admin.users.new'), new_admin_user_path, class: 'button' %>
-<table>
-  <thead>
+<h1 class="text-2xl font-bold text-gray-800 mb-6"><%= t('admin.users.title') %></h1>
+<%= link_to t('admin.users.new'), new_admin_user_path, class: 'inline-block mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+  <thead class="bg-gray-100">
     <tr>
-      <th><%= t('activerecord.attributes.user.email') %></th>
-      <th><%= t('admin.users.actions') %></th>
+      <th class="px-4 py-2 text-left text-gray-700 font-semibold"><%= t('activerecord.attributes.user.email') %></th>
+      <th class="px-4 py-2 text-left text-gray-700 font-semibold"><%= t('admin.users.actions') %></th>
     </tr>
   </thead>
   <tbody>
     <% @users.each do |user| %>
-      <tr>
-        <td><%= user.email %></td>
-        <td>
-          <%= link_to t('common.edit'), edit_admin_user_path(user), class: 'button' %>
+      <tr class="border-b last:border-b-0">
+        <td class="px-4 py-2"><%= user.email %></td>
+        <td class="px-4 py-2 flex gap-2">
+          <%= link_to t('common.edit'), edit_admin_user_path(user), class: 'px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition' %>
           <% unless user == current_user %>
-            <%= link_to t('admin.users.remove'), admin_user_path(user), method: :delete, data: { confirm: t('admin.users.confirm_remove') }, class: 'button' %>
+            <%= link_to t('admin.users.remove'), admin_user_path(user), method: :delete, data: { confirm: t('admin.users.confirm_remove') }, class: 'px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition' %>
           <% end %>
         </td>
       </tr>

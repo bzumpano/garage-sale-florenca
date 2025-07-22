@@ -1,2 +1,4 @@
-<h1><%= t('devise.sessions.signed_out', default: 'Logout efetuado com sucesso.') %></h1>
-<p><%= link_to t('app.title'), root_path, class: 'button' %></p> 
+<div class="max-w-lg mx-auto bg-white rounded shadow p-8 mt-16 text-center">
+  <h1 class="text-2xl font-bold text-gray-800 mb-4"><%= t('devise.sessions.signed_out', default: 'Logout efetuado com sucesso.') %></h1>
+  <%= link_to t('app.title'), root_path, class: 'inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
+</div> 

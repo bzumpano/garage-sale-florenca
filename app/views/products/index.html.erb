@@ -2,22 +2,24 @@
 
 <% content_for :title, "Products" %>
 
-<h1><%= t('products.index.title') %></h1>
+<h1 class="text-2xl font-bold mb-6 text-gray-800"><%= t('products.index.title') %></h1>
 <% if user_signed_in? && current_user.admin? %>
-  <div style="margin-bottom: 1rem;">
-    <%= link_to raw('<i class="fa-solid fa-plus" style="margin-right:0.5em;"></i>' + t('products.index.new')), new_product_path, class: 'button' %>
+  <div class="mb-6">
+    <%= link_to raw('<i class="fa-solid fa-plus mr-2"></i>' + t('products.index.new')), new_product_path, class: 'inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
   </div>
 <% end %>
-<div id="products-list">
+<div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
   <% if @products.any? %>
     <%= render @products %>
   <% else %>
-    <div class="empty-state">
+    <div class="col-span-full text-center py-16 text-gray-400 text-lg empty-state">
       <%= t('products.index.no_items', default: 'Nenhum item disponível.') %>
     </div>
   <% end %>
 </div>
-<%= paginate @products, remote: true %>
+<div class="mt-8">
+  <%= paginate @products, remote: true %>
+</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {

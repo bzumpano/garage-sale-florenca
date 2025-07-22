@@ -71,3 +71,8 @@ gem "kaminari", "~> 1.2"
 
 gem 'pg', '>= 1.5', group: [:production, :development]
 gem 'aws-sdk-s3', '>= 1.114', require: false
+
+
+gem "kaminari-tailwind", "~> 0.1.0"
+
+gem "tailwindcss-rails", "~> 4.3"

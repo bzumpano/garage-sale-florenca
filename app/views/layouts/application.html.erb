@@ -10,37 +10,40 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "trix", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body>
-    <nav>
-      <%= link_to t('app.title'), root_path %>
-      <% if user_signed_in? && current_user.admin? %>
-        | <%= link_to t('admin.users.title'), admin_users_path %>
-      <% end %>
-      <% if user_signed_in? %>
-        | <%= link_to t('app.logout'), destroy_user_session_path, method: :delete %>
-      <% else %>
-        | <%= link_to t('app.login'), new_user_session_path %>
-      <% end %>
+  <body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow mb-8">
+      <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between">
+        <div class="flex items-center gap-4">
+          <%= link_to t('app.title'), root_path, class: 'text-xl font-bold text-gray-800 hover:text-blue-600' %>
+          <% if user_signed_in? && current_user.admin? %>
+            <%= link_to t('admin.users.title'), admin_users_path, class: 'ml-4 text-gray-600 hover:text-blue-600' %>
+          <% end %>
+        </div>
+        <div class="flex items-center gap-4 mt-2 sm:mt-0">
+          <% if user_signed_in? %>
+            <%= link_to t('app.logout'), destroy_user_session_path, method: :delete, class: 'text-gray-600 hover:text-blue-600' %>
+          <% else %>
+            <%= link_to t('app.login'), new_user_session_path, class: 'text-gray-600 hover:text-blue-600' %>
+          <% end %>
+        </div>
+      </div>
     </nav>
-    <% if notice %>
-      <p class="notice"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert"><%= alert %></p>
-    <% end %>
-    <%= yield %>
+    <div class="container mx-auto px-4">
+      <% if notice %>
+        <div class="mb-4 p-4 rounded bg-green-100 text-green-800 border border-green-200"> <%= notice %> </div>
+      <% end %>
+      <% if alert %>
+        <div class="mb-4 p-4 rounded bg-red-100 text-red-800 border border-red-200"> <%= alert %> </div>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>

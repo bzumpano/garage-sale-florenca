@@ -2,48 +2,57 @@
 
 <%# Carousel for images %>
 <% if @product.images.attached? %>
-  <div class="carousel">
+  <div class="mb-6 flex gap-2 overflow-x-auto">
     <% @product.images.each do |image| %>
-      <%= image_tag image.variant(resize_to_limit: [600, 400]), style: 'max-width: 100%; height: auto;' %>
+      <%= image_tag image.variant(resize_to_limit: [600, 400]), class: 'rounded shadow w-72 h-48 object-cover flex-shrink-0' %>
     <% end %>
   </div>
 <% end %>
 
 <%# Sold warning %>
 <% if @product.sold? %>
-  <div class="alert"><%= t('products.show.sold_warning') %></div>
+  <div class="mb-4 p-4 rounded bg-yellow-100 text-yellow-800 border border-yellow-200 text-center font-semibold"><%= t('products.show.sold_warning') %></div>
 <% end %>
 
-<h1><%= @product.name %></h1>
-<p><strong><%= t('products.index.price') %>:</strong> R$ <%= number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %></p>
+<% if user_signed_in? && current_user.admin? %>
+  <div class="mb-4 flex gap-2">
+    <%= link_to edit_product_path(@product), class: 'inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition font-semibold' do %>
+      <i class="fa-solid fa-pen mr-2"></i> <%= t('common.edit') %>
+    <% end %>
+  </div>
+<% end %>
 
-<div class="details">
+<h1 class="text-2xl font-bold text-gray-800 mb-2"><%= @product.name %></h1>
+<p class="text-xl text-blue-700 font-semibold mb-4"><strong><%= t('products.index.price') %>:</strong> R$ <%= number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %></p>
+
+<div class="prose max-w-none mb-6 details">
   <%= @product.details.to_s %>
 </div>
 
 <% unless @product.sold? %>
-  <% whatsapp_number = ENV.fetch('WHATSAPP_NUMBER', '+5511999999999') %>
-  <% message = "Olá, tenho interesse no #{@product.name} (#{request.original_url}) no valor de R$ #{@product.price}" %>
-  <a href="https://wa.me/#{whatsapp_number.gsub(/\D/, '')}?text=#{ERB::Util.url_encode(message)}" target="_blank" class="button">
-    <span style="vertical-align: middle;">🟢</span> <%= t('products.show.whatsapp_button') %>
+  <% whatsapp_number = ENV.fetch('WHATSAPP_NUMBER', '+5519992937811') %>
+  <% formatted_price = number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %>
+  <% message = "Olá, tenho interesse no #{@product.name} (#{request.original_url}) no valor de R$ #{formatted_price}" %>
+  <a href="https://wa.me/<%= whatsapp_number.gsub(/\D/, '') %>?text=<%= ERB::Util.url_encode(message) %>" target="_blank" class="inline-flex items-center px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition font-semibold mb-6">
+    <i class="fa-brands fa-whatsapp mr-2"></i> <%= t('products.show.whatsapp_button') %>
   </a>
 <% end %>
 
 <% if user_signed_in? && current_user.admin? && !@product.sold? %>
-  <button id="mark-as-sold-btn" class="button"><%= t('products.show.mark_as_sold') %></button>
+  <button id="mark-as-sold-btn" class="inline-block px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition font-semibold mr-2"><%= t('products.show.mark_as_sold') %></button>
 <% end %>
 <% if user_signed_in? && current_user.admin? && @product.sold? %>
-  <button id="unmark-as-sold-btn" class="button"><%= t('products.show.unmark_as_sold') %></button>
+  <button id="unmark-as-sold-btn" class="inline-block px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition font-semibold"><%= t('products.show.unmark_as_sold') %></button>
 <% end %>
 
 <!-- Modal -->
-<div id="confirm-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
-  <div style="background:#fff; padding:2rem; border-radius:8px; max-width:90vw; text-align:center;">
-    <p id="modal-message"></p>
+<div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-xs w-full text-center">
+    <p id="modal-message" class="mb-6 text-lg font-medium"></p>
     <form id="modal-form" method="post" style="display:inline;">
       <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-      <button type="submit" class="button"><%= t('common.confirm') %></button>
-      <button type="button" id="modal-cancel" class="button"><%= t('common.cancel') %></button>
+      <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold mr-2"><%= t('common.confirm') %></button>
+      <button type="button" id="modal-cancel" class="px-6 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition font-semibold"><%= t('common.cancel') %></button>
     </form>
   </div>
 </div>
@@ -54,10 +63,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('modal-message').textContent = message;
     var form = document.getElementById('modal-form');
     form.action = action;
-    document.getElementById('confirm-modal').style.display = 'flex';
+    document.getElementById('confirm-modal').classList.remove('hidden');
+    document.getElementById('confirm-modal').classList.add('flex');
   }
   function hideModal() {
-    document.getElementById('confirm-modal').style.display = 'none';
+    document.getElementById('confirm-modal').classList.add('hidden');
+    document.getElementById('confirm-modal').classList.remove('flex');
   }
   var markBtn = document.getElementById('mark-as-sold-btn');
   if (markBtn) {
@@ -72,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   document.getElementById('modal-cancel').addEventListener('click', hideModal);
-  // Hide modal on background click
   document.getElementById('confirm-modal').addEventListener('click', function(e) {
     if (e.target === this) hideModal();
   });

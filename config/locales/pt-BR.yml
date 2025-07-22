@@ -37,7 +37,7 @@ pt-BR:
   products:
     index:
       title: "Itens à venda"
-      new: "Novo item"
+      new: "Cadastrar novo item"
       details: "Detalhes"
       price: "Preço"
       see_details: "Ver detalhes"
