@@ -1,10 +1,73 @@
 <% unless product.sold? %>
   <div class="bg-white rounded-lg shadow p-4 flex flex-col items-center product-card">
     <% if product.images.attached? %>
-      <%= image_tag product.images.first.variant(resize_to_limit: [300, 200]), class: 'rounded mb-4 w-full object-cover', style: 'max-width: 100%; height: auto;' %>
+      <div class="relative w-full mb-4">
+        <div id="carousel-track-<%= product.id %>" class="relative w-full h-48 flex items-center justify-center overflow-hidden">
+          <div id="carousel-inner-<%= product.id %>" class="flex h-full transition-transform duration-300" style="will-change: transform; width: <%= product.images.size * 100 %>%;">
+            <% product.images.each_with_index do |image, idx| %>
+              <div class="flex-shrink-0 flex items-center justify-center w-full h-full" style="width:100%" data-carousel-index="<%= idx %>">
+                <%= image_tag image.variant(resize_to_limit: [300, 200]), class: 'rounded object-contain max-h-full max-w-full mx-auto' %>
+              </div>
+            <% end %>
+          </div>
+          <!-- Left arrow -->
+          <button type="button" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white border-2 border-white bg-opacity-90 rounded-full p-1 shadow-lg hover:bg-opacity-100 transition z-50 flex items-center justify-center carousel-left" data-carousel-id="<%= product.id %>" style="height: 2.5rem; width: 2.5rem;"><i class="fa-solid fa-chevron-left text-gray-700 text-lg"></i></button>
+          <!-- Right arrow -->
+          <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white border-2 border-white bg-opacity-90 rounded-full p-1 shadow-lg hover:bg-opacity-100 transition z-50 flex items-center justify-center carousel-right" data-carousel-id="<%= product.id %>" style="height: 2.5rem; width: 2.5rem;"><i class="fa-solid fa-chevron-right text-gray-700 text-lg"></i></button>
+        </div>
+        <!-- Dots -->
+        <div class="flex justify-center gap-1 mt-2" id="carousel-dots-<%= product.id %>">
+          <% product.images.each_with_index do |_, idx| %>
+            <button class="w-2 h-2 rounded-full bg-gray-300 carousel-dot" data-dot-index="<%= idx %>" data-carousel-id="<%= product.id %>"></button>
+          <% end %>
+        </div>
+      </div>
     <% end %>
     <h2 class="text-lg font-semibold text-gray-800 mb-2"><%= product.name %></h2>
     <p class="text-blue-700 font-bold text-xl mb-4">R$ <%= number_to_currency(product.price, unit: '', separator: ',', delimiter: '.') %></p>
     <%= link_to t('products.index.see_details'), product_path(product), class: 'inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition' %>
   </div>
 <% end %>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[id^="carousel-track-"]').forEach(function(track) {
+    const productId = track.id.replace('carousel-track-', '');
+    const inner = document.getElementById('carousel-inner-' + productId);
+    if (!track || !inner) return;
+    const items = inner.querySelectorAll('[data-carousel-index]');
+    const dots = document.querySelectorAll('.carousel-dot[data-carousel-id="' + productId + '"]');
+    let current = 0;
+    function showOnlyIndex(idx) {
+      current = idx;
+      inner.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle('bg-blue-500', i === idx));
+    }
+    document.querySelector('.carousel-left[data-carousel-id="' + productId + '"]').onclick = function() {
+      showOnlyIndex((current - 1 + items.length) % items.length);
+    };
+    document.querySelector('.carousel-right[data-carousel-id="' + productId + '"]').onclick = function() {
+      showOnlyIndex((current + 1) % items.length);
+    };
+    dots.forEach((dot, i) => {
+      dot.onclick = () => showOnlyIndex(i);
+    });
+    // Swipe gesture support
+    let startX = null;
+    track.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) startX = e.touches[0].clientX;
+    });
+    track.addEventListener('touchend', function(e) {
+      if (startX === null) return;
+      let endX = e.changedTouches[0].clientX;
+      let dx = endX - startX;
+      if (Math.abs(dx) > 40) {
+        if (dx < 0) showOnlyIndex((current + 1) % items.length);
+        else showOnlyIndex((current - 1 + items.length) % items.length);
+      }
+      startX = null;
+    });
+    // Show first image on load
+    showOnlyIndex(0);
+  });
+});
+</script>

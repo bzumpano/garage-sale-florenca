@@ -28,19 +28,29 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     @product = Product.new(product_params)
-    if @product.images.attachments.size > 20
-      flash.now[:alert] = t('flash.products.max_images')
-      render :new and return
-    end
-
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to @product, notice: t('flash.products.created') }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+    if product_params[:images]
+      if product_params[:images].size > 20
+        flash.now[:alert] = 'Máximo de 20 imagens por item.'
+        render :new and return
       end
+      product_params[:images].each do |img|
+        if img.size > 10.megabytes
+          flash.now[:alert] = 'Cada imagem deve ter no máximo 10MB.'
+          render :new and return
+        end
+        unless img.content_type&.start_with?('image/')
+          flash.now[:alert] = 'Apenas arquivos de imagem são permitidos.'
+          render :new and return
+        end
+      end
+    end
+    if @product.save
+      if product_params[:images]
+        @product.images.attach(product_params[:images])
+      end
+      redirect_to @product, notice: t('flash.products.created')
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -50,7 +60,31 @@ class ProductsController < ApplicationController
       flash.now[:alert] = 'Máximo de 20 fotos por item.'
       render :edit and return
     end
-    if @product.update(product_params)
+    if product_params[:images]
+      product_params[:images].each do |img|
+        if img.size > 10.megabytes
+          flash.now[:alert] = 'Cada imagem deve ter no máximo 10MB.'
+          render :edit and return
+        end
+        unless img.content_type&.start_with?('image/')
+          flash.now[:alert] = 'Apenas arquivos de imagem são permitidos.'
+          render :edit and return
+        end
+      end
+    end
+    # Remove images if requested
+    if params[:product][:remove_image_ids].present?
+      remove_ids = Array(params[:product][:remove_image_ids]).reject(&:blank?).map(&:to_i)
+      @product.images.each do |img|
+        img.purge if remove_ids.include?(img.id)
+      end
+    end
+    # If new images are attached, append them
+    if product_params[:images]
+      @product.images.attach(product_params[:images])
+    end
+    # Update other attributes (excluding images, which are handled above)
+    if @product.update(product_params.except(:images))
       redirect_to @product, notice: t('flash.products.updated')
     else
       render :edit

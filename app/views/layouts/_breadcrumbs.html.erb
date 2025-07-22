@@ -1,0 +1,37 @@
+<nav aria-label="Breadcrumb" class="mb-4">
+  <ol class="flex flex-wrap items-center text-sm text-gray-500">
+    <li>
+      <%= link_to t('app.title'), root_path, class: 'hover:text-blue-600 font-semibold' %>
+    </li>
+    <% if controller_name == 'products' %>
+      <% if action_name == 'index' %>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li class="text-gray-700 font-semibold"><%= t('products.index.title') %></li>
+      <% elsif action_name == 'show' %>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li><%= link_to t('products.index.title'), products_path, class: 'hover:text-blue-600' %></li>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li class="text-gray-700 font-semibold"><%= @product&.name %></li>
+      <% elsif action_name == 'edit' %>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li><%= link_to t('products.index.title'), products_path, class: 'hover:text-blue-600' %></li>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li><%= link_to @product&.name, product_path(@product), class: 'hover:text-blue-600' %></li>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li class="text-gray-700 font-semibold"><%= t('common.edit') %></li>
+      <% elsif action_name == 'new' %>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li><%= link_to t('products.index.title'), products_path, class: 'hover:text-blue-600' %></li>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li class="text-gray-700 font-semibold"><%= t('products.index.new') %></li>
+      <% end %>
+    <% elsif controller_path.start_with?('admin/') %>
+      <li class="mx-2 text-gray-400">&gt;</li>
+      <li class="text-gray-700 font-semibold">Admin</li>
+      <% if controller_name == 'users' %>
+        <li class="mx-2 text-gray-400">&gt;</li>
+        <li class="text-gray-700 font-semibold"><%= t('admin.users.title', default: 'Administradores') %></li>
+      <% end %>
+    <% end %>
+  </ol>
+</nav> 
