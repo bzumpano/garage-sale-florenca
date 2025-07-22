@@ -68,3 +68,5 @@ gem "rspec-rails", "~> 8.0"
 gem "devise", "~> 4.9"
 
 gem "kaminari", "~> 1.2"
+
+gem 'pg', '>= 1.5', group: [:production, :development]
