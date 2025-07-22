@@ -87,6 +87,7 @@ function setupProductFormImageUpload() {
       input.name = 'product[images][]';
       input.accept = 'image/*';
       input.setAttribute('data-direct-upload', 'true');
+      input.setAttribute('capture', '');
       input.className = 'block border border-gray-300 rounded px-3 py-2 mb-1';
       input.style.width = '180px';
       input.style.maxWidth = '100%';
