@@ -46,7 +46,8 @@
   </div>
 <% end %>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+function setupProductFormImageUpload() {
+  console.log('Product form image upload JS loaded');
   // Remove image logic
   document.querySelectorAll('.remove-image-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -128,5 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
       inputsDiv.appendChild(wrapper);
     });
   }
-});
+}
+document.addEventListener('turbo:load', setupProductFormImageUpload);
+document.addEventListener('DOMContentLoaded', setupProductFormImageUpload);
 </script>
