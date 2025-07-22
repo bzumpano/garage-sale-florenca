@@ -1,0 +1,33 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Products" %>
+
+<h1><%= t('products.index.title') %></h1>
+<div id="products-list">
+  <%= render @products %>
+</div>
+<%= paginate @products, remote: true %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let loading = false;
+    window.onscroll = function() {
+      if (loading) return;
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+        const nextPage = document.querySelector('.pagination .next_page');
+        if (nextPage && !nextPage.classList.contains('disabled')) {
+          loading = true;
+          fetch(nextPage.href, { headers: { 'Accept': 'text/javascript' } })
+            .then(response => response.text())
+            .then(html => {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+              document.getElementById('products-list').insertAdjacentHTML('beforeend', tempDiv.querySelector('#products-list').innerHTML);
+              nextPage.parentElement.remove();
+              loading = false;
+            });
+        }
+      }
+    };
+  });
+</script>

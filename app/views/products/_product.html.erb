@@ -1,0 +1,10 @@
+<% unless product.sold? %>
+  <div class="product-card">
+    <% if product.images.attached? %>
+      <%= image_tag product.images.first.variant(resize_to_limit: [300, 200]), style: 'max-width: 100%; height: auto;' %>
+    <% end %>
+    <h2><%= product.name %></h2>
+    <p>R$ <%= number_to_currency(product.price, unit: '', separator: ',', delimiter: '.') %></p>
+    <%= link_to t('products.index.see_details'), product_path(product), class: 'button' %>
+  </div>
+<% end %>

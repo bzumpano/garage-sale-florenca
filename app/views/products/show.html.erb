@@ -1,0 +1,80 @@
+<p style="color: green"><%= notice %></p>
+
+<%# Carousel for images %>
+<% if @product.images.attached? %>
+  <div class="carousel">
+    <% @product.images.each do |image| %>
+      <%= image_tag image.variant(resize_to_limit: [600, 400]), style: 'max-width: 100%; height: auto;' %>
+    <% end %>
+  </div>
+<% end %>
+
+<%# Sold warning %>
+<% if @product.sold? %>
+  <div class="alert"><%= t('products.show.sold_warning') %></div>
+<% end %>
+
+<h1><%= @product.name %></h1>
+<p><strong><%= t('products.index.price') %>:</strong> R$ <%= number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %></p>
+
+<div class="details">
+  <%= @product.details.to_s %>
+</div>
+
+<% unless @product.sold? %>
+  <% whatsapp_number = ENV.fetch('WHATSAPP_NUMBER', '+5511999999999') %>
+  <% message = "Olá, tenho interesse no #{@product.name} (#{request.original_url}) no valor de R$ #{@product.price}" %>
+  <a href="https://wa.me/#{whatsapp_number.gsub(/\D/, '')}?text=#{ERB::Util.url_encode(message)}" target="_blank" class="button">
+    <span style="vertical-align: middle;">🟢</span> <%= t('products.show.whatsapp_button') %>
+  </a>
+<% end %>
+
+<% if user_signed_in? && current_user.admin? && !@product.sold? %>
+  <button id="mark-as-sold-btn" class="button"><%= t('products.show.mark_as_sold') %></button>
+<% end %>
+<% if user_signed_in? && current_user.admin? && @product.sold? %>
+  <button id="unmark-as-sold-btn" class="button"><%= t('products.show.unmark_as_sold') %></button>
+<% end %>
+
+<!-- Modal -->
+<div id="confirm-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;">
+  <div style="background:#fff; padding:2rem; border-radius:8px; max-width:90vw; text-align:center;">
+    <p id="modal-message"></p>
+    <form id="modal-form" method="post" style="display:inline;">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <button type="submit" class="button"><%= t('common.confirm') %></button>
+      <button type="button" id="modal-cancel" class="button"><%= t('common.cancel') %></button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function showModal(message, action) {
+    document.getElementById('modal-message').textContent = message;
+    var form = document.getElementById('modal-form');
+    form.action = action;
+    document.getElementById('confirm-modal').style.display = 'flex';
+  }
+  function hideModal() {
+    document.getElementById('confirm-modal').style.display = 'none';
+  }
+  var markBtn = document.getElementById('mark-as-sold-btn');
+  if (markBtn) {
+    markBtn.addEventListener('click', function() {
+      showModal('<%= t('products.show.confirm_mark') %>', '<%= mark_as_sold_product_path(@product) %>');
+    });
+  }
+  var unmarkBtn = document.getElementById('unmark-as-sold-btn');
+  if (unmarkBtn) {
+    unmarkBtn.addEventListener('click', function() {
+      showModal('<%= t('products.show.confirm_unmark') %>', '<%= unmark_as_sold_product_path(@product) %>');
+    });
+  }
+  document.getElementById('modal-cancel').addEventListener('click', hideModal);
+  // Hide modal on background click
+  document.getElementById('confirm-modal').addEventListener('click', function(e) {
+    if (e.target === this) hideModal();
+  });
+});
+</script>

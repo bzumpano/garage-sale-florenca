@@ -1,0 +1,18 @@
+<h1><%= t('admin.users.new') %></h1>
+<%= form_with(model: [:admin, @user], local: true) do |form| %>
+  <div class="field">
+    <%= form.label :email, t('activerecord.attributes.user.email') %>
+    <%= form.email_field :email %>
+  </div>
+  <div class="field">
+    <%= form.label :password, t('activerecord.attributes.user.password') %>
+    <%= form.password_field :password %>
+  </div>
+  <div class="field">
+    <%= form.label :password_confirmation, t('activerecord.attributes.user.password_confirmation') %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+  <div class="actions">
+    <%= form.submit t('admin.users.create'), class: 'button' %>
+  </div>
+<% end %>

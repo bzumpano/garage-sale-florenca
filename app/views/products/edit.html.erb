@@ -1,0 +1,12 @@
+<% content_for :title, t('common.edit') %>
+
+<h1><%= t('common.edit') %></h1>
+
+<%= render "form", product: @product %>
+
+<br>
+
+<div>
+  <%= link_to t('products.index.see_details'), @product %> |
+  <%= link_to t('common.back'), products_path %>
+</div>

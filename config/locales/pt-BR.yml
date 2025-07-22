@@ -1,0 +1,87 @@
+pt-BR:
+  app:
+    title: "Garage Sale Florença"
+    login: "Entrar"
+    logout: "Sair"
+  flash:
+    products:
+      created: "Produto criado com sucesso."
+      updated: "Produto atualizado com sucesso."
+      destroyed: "Produto removido com sucesso."
+      sold: "Item marcado como vendido."
+      unsold: "Item desmarcado como vendido."
+      error: "Erro ao atualizar o item."
+      max_images: "Máximo de 20 fotos por item."
+    admin:
+      created: "Admin criado com sucesso."
+      updated: "Admin atualizado com sucesso."
+      removed: "Admin removido com sucesso."
+      self_remove: "Você não pode remover a si mesmo."
+      restricted: "Acesso restrito a administradores."
+  hello: "Olá mundo"
+  activerecord:
+    models:
+      product: "Item"
+      user: "Administrador"
+    attributes:
+      product:
+        name: "Nome"
+        price: "Preço"
+        details: "Detalhes"
+        images: "Fotos"
+        sold: "Vendido"
+      user:
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+  products:
+    index:
+      title: "Itens à venda"
+      new: "Novo item"
+      details: "Detalhes"
+      price: "Preço"
+      see_details: "Ver detalhes"
+      no_items: "Nenhum item disponível."
+    show:
+      mark_as_sold: "Marcar como vendido"
+      unmark_as_sold: "Desmarcar como vendido"
+      sold_warning: "Esse item não está mais disponível"
+      whatsapp_button: "Quero esse item"
+      confirm_mark: "Tem certeza que deseja marcar como vendido?"
+      confirm_unmark: "Tem certeza que deseja desmarcar como vendido?"
+      created: "Produto criado com sucesso."
+      updated: "Produto atualizado com sucesso."
+      sold: "Item marcado como vendido."
+      unsold: "Item desmarcado como vendido."
+      error: "Erro ao atualizar o item."
+    form:
+      images: "Fotos (até 20)"
+      name: "Nome"
+      details: "Detalhes"
+      price: "Preço (R$)"
+      submit: "Salvar"
+      max_images: "Máximo de 20 fotos por item."
+  admin:
+    users:
+      title: "Administradores"
+      new: "Novo Administrador"
+      edit: "Editar Administrador"
+      create: "Criar"
+      update: "Atualizar"
+      remove: "Remover"
+      actions: "Ações"
+      self_remove: "Você não pode remover a si mesmo."
+      created: "Admin criado com sucesso."
+      updated: "Admin atualizado com sucesso."
+      removed: "Admin removido com sucesso."
+      confirm_remove: "Tem certeza?"
+  common:
+    confirm: "Confirmar"
+    cancel: "Cancelar"
+    back: "Voltar"
+    notice: "Aviso"
+    alert: "Alerta"
+    edit: "Editar"
+    delete: "Excluir"
+    save: "Salvar"
+    actions: "Ações" 

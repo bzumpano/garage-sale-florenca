@@ -1,0 +1,43 @@
+<%= form_with(model: product, local: true) do |form| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :images, t('products.form.images') %><br>
+    <%= form.file_field :images, multiple: true, direct_upload: true, accept: 'image/*', capture: 'environment' %>
+    <% if product.images.attached? %>
+      <div>
+        <% product.images.each do |image| %>
+          <%= image_tag image.variant(resize_to_limit: [100, 100]) %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name, t('products.form.name') %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :details, t('products.form.details') %>
+    <%= form.rich_text_area :details %>
+  </div>
+
+  <div class="field">
+    <%= form.label :price, t('products.form.price') %>
+    <%= form.number_field :price, step: 0.01 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit t('products.form.submit') %>
+  </div>
+<% end %>
