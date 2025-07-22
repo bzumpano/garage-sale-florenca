@@ -79,3 +79,103 @@ To trigger a deploy manually (without pushing new code):
 ```bash
 bundle exec rspec
 ```
+
+---
+
+## **1. Create an S3 Bucket on AWS**
+
+1. Go to the [AWS S3 Console](https://s3.console.aws.amazon.com/s3/home).
+2. Click **Create bucket**.
+3. Enter a unique bucket name (e.g., `garage-sale-florenca-production`).
+4. Choose a region (e.g., `us-east-1`).
+5. Leave the rest as default or adjust as needed, then click **Create bucket**.
+
+---
+
+## **2. Create an IAM User for S3 Access**
+
+1. Go to the [IAM Console](https://console.aws.amazon.com/iam/home).
+2. Click **Users** > **Add users**.
+3. Enter a username (e.g., `heroku-activestorage`).
+4. Select **Access key - Programmatic access**.
+5. Click **Next: Permissions**.
+6. Click **Attach existing policies directly**.
+7. Search for and select **AmazonS3FullAccess** (or create a custom policy for more restricted access).
+8. Click **Next: Tags** > **Next: Review** > **Create user**.
+9. **Save the Access Key ID and Secret Access Key**.
+
+---
+
+## **3. Add S3 Credentials to Heroku Config Vars**
+
+In your project directory, run:
+
+```bash
+heroku config:set AWS_ACCESS_KEY_ID=your-access-key-id
+heroku config:set AWS_SECRET_ACCESS_KEY=your-secret-access-key
+heroku config:set AWS_REGION=your-bucket-region
+heroku config:set AWS_BUCKET=your-bucket-name
+```
+
+Example:
+
+```bash
+heroku config:set AWS_ACCESS_KEY_ID=AKIA...
+heroku config:set AWS_SECRET_ACCESS_KEY=abcd1234...
+heroku config:set AWS_REGION=us-east-1
+heroku config:set AWS_BUCKET=garage-sale-florenca-production
+```
+
+---
+
+## **4. Update `config/storage.yml`**
+
+Make sure you have an S3 service defined (Rails 8 default includes this):
+
+```yaml
+amazon:
+  service: S3
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  bucket: <%= ENV['AWS_BUCKET'] %>
+```
+
+---
+
+## **5. Set ActiveStorage to Use S3 in Production**
+
+In `config/environments/production.rb`, set:
+
+```ruby
+config.active_storage.service = :amazon
+```
+
+---
+
+## **6. Commit and Deploy**
+
+```bash
+git add config/storage.yml config/environments/production.rb
+git commit -m "Configure ActiveStorage to use S3 in production"
+git push origin main
+```
+
+Heroku will deploy and use S3 for all file uploads in production.
+
+---
+
+## **7. (Optional) Test Uploads**
+
+- Upload an image in your production app and check your S3 bucket to confirm the file appears.
+
+---
+
+### **Summary**
+
+- Create S3 bucket and IAM user
+- Add AWS credentials to Heroku config
+- Set up `storage.yml` and `production.rb`
+- Deploy
+
+If you want, I can check or update your `storage.yml` and `production.rb` for you—just ask!
