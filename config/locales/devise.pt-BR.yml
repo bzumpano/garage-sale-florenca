@@ -56,7 +56,7 @@ pt-BR:
       send_paranoid_instructions: "Se sua conta existir, você receberá um e-mail com instruções para desbloqueá-la em alguns minutos."
     omniauth_callbacks:
       success: "Autenticado com sucesso em %{kind} como %{name}."
-      failure: "Não foi possível autenticar você em %{kind} porque "%{reason}"."
+      failure: "Não foi possível autenticar você em %{kind} porque \"%{reason}\"."
     errors:
       messages:
         already_confirmed: "já foi confirmado, por favor tente entrar"
