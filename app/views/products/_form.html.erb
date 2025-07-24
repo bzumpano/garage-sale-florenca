@@ -23,9 +23,7 @@
   </div>
   <div>
     <%= form.label :images, t('products.form.images', default: 'Imagens'), class: 'block font-medium text-gray-700 mb-1' %>
-    <div id="dynamic-image-inputs" class="flex flex-wrap gap-4 mt-2"></div>
-    <button type="button" id="add-image-btn" class="mt-2 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"><i class="fa fa-plus mr-1"></i>Adicionar imagem</button>
-    <div id="uploaded-images-preview" class="flex flex-wrap gap-4 mt-4"></div>
+    <div id="uploaded-images-preview" class="flex flex-wrap gap-4 mt-2"></div>
     <% if product.images.attached? %>
       <div class="flex flex-wrap gap-4 mt-4" id="existing-images-preview">
         <% product.images.each do |image| %>
@@ -39,7 +37,28 @@
         <% end %>
       </div>
     <% end %>
+    <input type="file" id="product-images-input" name="product[images][]" accept="image/*" multiple data-direct-upload="true" class="block border border-gray-300 rounded px-3 py-2 mt-2 w-full" style="max-width: 100%;" />
+    <button type="button" id="add-image-btn" class="mt-2 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"><i class="fa fa-plus mr-1"></i>Adicionar imagem</button>
     <div class="text-sm text-gray-500 mt-2">Máximo de 20 imagens, cada uma até 10MB. Apenas arquivos de imagem são permitidos.<br>Em dispositivos móveis, você pode tirar uma foto ou escolher da galeria. O navegador pode pedir permissão para acessar a câmera ou arquivos.</div>
+    <!-- Modal for mobile image source selection -->
+    <div id="image-source-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-11/12 max-w-xs mx-auto p-0 overflow-hidden relative">
+        <button id="close-image-source-modal-x" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 text-xl focus:outline-none" aria-label="Fechar">
+          <i class="fa fa-times"></i>
+        </button>
+        <table class="w-full text-center mt-2">
+          <tbody>
+            <tr class="border-b cursor-pointer hover:bg-gray-100" id="choose-camera-row">
+              <td class="py-4 text-lg font-medium"><i class="fa fa-camera mr-2"></i>Tirar foto com a Câmera</td>
+            </tr>
+            <tr class="cursor-pointer hover:bg-gray-100" id="choose-gallery-row">
+              <td class="py-4 text-lg font-medium"><i class="fa fa-image mr-2"></i>Abrir Galeria</td>
+            </tr>
+          </tbody>
+        </table>
+        <button id="close-image-source-modal" class="block w-full py-3 text-gray-500 hover:text-gray-700 border-t">Cancelar</button>
+      </div>
+    </div>
   </div>
   <div>
     <%= form.submit t('products.form.submit'), class: 'px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition hidden sm:inline-block' %>
@@ -47,7 +66,6 @@
 <% end %>
 <script>
 function setupProductFormImageUpload() {
-  console.log('Product form image upload JS loaded');
   // Remove image logic
   document.querySelectorAll('.remove-image-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -60,73 +78,108 @@ function setupProductFormImageUpload() {
     });
   });
 
-  // Dynamic image input logic with limits
-  var addBtn = document.getElementById('add-image-btn');
-  var inputsDiv = document.getElementById('dynamic-image-inputs');
+  var input = document.getElementById('product-images-input');
   var preview = document.getElementById('uploaded-images-preview');
-  let inputCount = 0;
+  var addBtn = document.getElementById('add-image-btn');
   const MAX_IMAGES = 20;
   const MAX_SIZE_MB = 10;
+
   function getCurrentImageCount() {
     let existing = document.querySelectorAll('#existing-images-preview .group:not([style*="display: none"])').length;
-    let newInputs = inputsDiv.querySelectorAll('input[type="file"]');
-    return existing + newInputs.length;
+    let newFiles = input && input.files ? input.files.length : 0;
+    return existing + newFiles;
   }
-  if (addBtn && inputsDiv && preview) {
-    addBtn.addEventListener('click', function() {
-      if (getCurrentImageCount() >= MAX_IMAGES) {
+
+  if (input) {
+    input.addEventListener('change', function(e) {
+      preview.innerHTML = '';
+      let files = Array.from(input.files);
+      if (getCurrentImageCount() > MAX_IMAGES) {
         alert('Máximo de 20 imagens por item.');
+        input.value = '';
         return;
       }
-      inputCount++;
-      var wrapper = document.createElement('div');
-      wrapper.className = 'relative group';
-      wrapper.style.display = 'inline-block';
-      var input = document.createElement('input');
-      input.type = 'file';
-      input.name = 'product[images][]';
-      input.accept = 'image/*';
-      input.setAttribute('data-direct-upload', 'true');
-      input.setAttribute('capture', '');
-      input.className = 'block border border-gray-300 rounded px-3 py-2 mb-1';
-      input.style.width = '180px';
-      input.style.maxWidth = '100%';
-      input.addEventListener('change', function(e) {
-        if (input.files && input.files[0]) {
-          var file = input.files[0];
-          if (!file.type.startsWith('image/')) {
-            alert('Apenas arquivos de imagem são permitidos.');
-            input.value = '';
-            return;
-          }
-          if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-            alert('Cada imagem deve ter no máximo 10MB.');
-            input.value = '';
-            return;
-          }
-          var reader = new FileReader();
-          reader.onload = function(ev) {
-            let img = wrapper.querySelector('img');
-            if (!img) {
-              img = document.createElement('img');
-              img.className = 'rounded border w-24 h-24 object-cover mt-1';
-              wrapper.appendChild(img);
-            }
-            img.src = ev.target.result;
-          };
-          reader.readAsDataURL(file);
+      files.forEach(function(file) {
+        if (!file.type.startsWith('image/')) {
+          alert('Apenas arquivos de imagem são permitidos.');
+          input.value = '';
+          return;
         }
+        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+          alert('Cada imagem deve ter no máximo 10MB.');
+          input.value = '';
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var img = document.createElement('img');
+          img.className = 'rounded border w-24 h-24 object-cover mt-1';
+          img.src = ev.target.result;
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
       });
-      var removeBtn = document.createElement('button');
-      removeBtn.type = 'button';
-      removeBtn.className = 'absolute top-0 right-0 bg-white bg-opacity-80 rounded-full p-1 m-1 shadow text-red-600 hover:bg-opacity-100 transition';
-      removeBtn.innerHTML = '<i class="fa fa-times"></i>';
-      removeBtn.onclick = function() {
-        wrapper.remove();
+    });
+  }
+
+  // Mobile: modal for Gallery or Camera
+  var modal = document.getElementById('image-source-modal');
+  var cameraRow = document.getElementById('choose-camera-row');
+  var galleryRow = document.getElementById('choose-gallery-row');
+  var closeModalBtn = document.getElementById('close-image-source-modal');
+  var closeModalBtnX = document.getElementById('close-image-source-modal-x');
+
+  if (addBtn && input) {
+    addBtn.addEventListener('click', function(e) {
+      if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
+        // Mobile: show modal
+        modal.classList.remove('hidden');
+        // Prevent background scroll
+        document.body.style.overflow = 'hidden';
+      } else {
+        // Desktop: just open file picker
+        input.setAttribute('multiple', 'multiple');
+        input.removeAttribute('capture');
+        input.click();
+      }
+    });
+  }
+
+  if (modal && cameraRow && galleryRow && closeModalBtn && input) {
+    cameraRow.onclick = function() {
+      input.removeAttribute('multiple');
+      input.setAttribute('capture', 'environment');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      input.click();
+    };
+    galleryRow.onclick = function() {
+      input.setAttribute('multiple', 'multiple');
+      input.removeAttribute('capture');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      input.click();
+    };
+    closeModalBtn.onclick = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    };
+    if (closeModalBtnX) {
+      closeModalBtnX.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
       };
-      wrapper.appendChild(input);
-      wrapper.appendChild(removeBtn);
-      inputsDiv.appendChild(wrapper);
+    }
+    // Dismiss modal on outside click
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
     });
   }
 }
