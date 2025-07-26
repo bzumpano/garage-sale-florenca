@@ -10,21 +10,12 @@
 #
 default: &default
   adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: localhost
 
 development:
-  primary:
-    <<: *default
-    database: garage_sale_florenca_development
-  cache:
-    <<: *default
-    database: garage_sale_florenca_development_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *default
-    database: garage_sale_florenca_development_queue
-    migrations_paths: db/queue_migrate
+  <<: *default
+  database: garage_sale_florenca_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -37,22 +28,5 @@ test:
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  primary:
-    <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
-    # database: garage_sale_florenca_production
-  cache:
-    <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
-    # database: garage_sale_florenca_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
-    # database: garage_sale_florenca_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *default
-    url: <%= ENV['DATABASE_URL'] %>
-    # database: garage_sale_florenca_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
