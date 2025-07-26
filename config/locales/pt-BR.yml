@@ -49,6 +49,7 @@ pt-BR:
       whatsapp_button: "Quero esse item"
       confirm_mark: "Tem certeza que deseja marcar como vendido?"
       confirm_unmark: "Tem certeza que deseja desmarcar como vendido?"
+      confirm_delete: "Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita."
       created: "Produto criado com sucesso."
       updated: "Produto atualizado com sucesso."
       sold: "Item marcado como vendido."
