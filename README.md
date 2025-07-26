@@ -37,13 +37,15 @@ brew services start postgresql@16
    bundle install
    yarn install --check-files
    ```
-3. **Setup the database:**
+3. **Setup environment variables:**
+   ```bash
+   cp .env.example .env.development
+   cp .env.example .env.test
+   ```
+   Then edit the `.env.development` and `.env.test` files with your actual values.
+4. **Setup the database:**
    ```bash
    rails db:setup
-   ```
-4. **Set WhatsApp number in environment:**
-   ```bash
-   export WHATSAPP_NUMBER='+5511999999999'
    ```
 5. **Start the server:**
    ```bash
@@ -52,6 +54,47 @@ brew services start postgresql@16
 6. **Default admin login:**
    - Email: admin@example.com
    - Password: admin123
+
+## Environment Variables
+
+This project uses the `dotenv-rails` gem to manage environment variables. The following files are used:
+
+- `.env.example` - Template file with example variables
+- `.env.development` - Development environment variables
+- `.env.test` - Test environment variables
+
+### Required Environment Variables
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `SECRET_KEY_BASE` - Rails secret key base
+- `RAILS_MASTER_KEY` - Rails master key for credentials
+- `DEVISE_SECRET_KEY` - Devise secret key for authentication
+
+### Optional Environment Variables
+
+- `AWS_ACCESS_KEY_ID` - AWS access key for S3 storage
+- `AWS_SECRET_ACCESS_KEY` - AWS secret key for S3 storage
+- `AWS_REGION` - AWS region (default: us-east-1)
+- `AWS_BUCKET` - S3 bucket name
+- `SMTP_HOST` - SMTP server host for email
+- `SMTP_PORT` - SMTP server port
+- `SMTP_USERNAME` - SMTP username
+- `SMTP_PASSWORD` - SMTP password
+
+### Getting Started
+
+1. Copy the example file:
+   ```bash
+   cp .env.example .env.development
+   cp .env.example .env.test
+   ```
+
+2. Generate a new secret key base:
+   ```bash
+   rails secret
+   ```
+
+3. Update the environment files with your actual values.
 
 ## Automatic Deploy to Heroku
 This project uses GitHub Actions to automatically deploy to Heroku every time a commit is pushed to the `main` branch.
