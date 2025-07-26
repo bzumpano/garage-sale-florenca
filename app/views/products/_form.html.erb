@@ -197,70 +197,82 @@ function setupProductFormImageUpload() {
 
   if (input) {
     input.addEventListener('change', function(e) {
+      // Clear the preview container completely
       preview.innerHTML = '';
+      
       let files = Array.from(input.files);
       if (getCurrentImageCount() > MAX_IMAGES) {
         alert('Máximo de 20 imagens por item.');
         input.value = '';
         return;
       }
+      
+      // Process each file only once
       files.forEach(function(file, index) {
         if (!file.type.startsWith('image/')) {
           alert('Apenas arquivos de imagem são permitidos.');
           input.value = '';
+          preview.innerHTML = '';
           return;
         }
         if (file.size > MAX_SIZE_MB * 1024 * 1024) {
           alert('Cada imagem deve ter no máximo 10MB.');
           input.value = '';
+          preview.innerHTML = '';
           return;
         }
+        
+        // Create container for this specific file
+        var container = document.createElement('div');
+        container.className = 'relative group';
+        container.setAttribute('data-file-index', index);
+        
+        var imgContainer = document.createElement('div');
+        imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
+        
+        var img = document.createElement('img');
+        img.className = 'w-full h-full object-cover';
+        
+        // Create delete button for new images
+        var deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
+        deleteBtn.setAttribute('data-file-index', index);
+        deleteBtn.setAttribute('aria-label', 'Remove image');
+        deleteBtn.innerHTML = `
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        `;
+        
+        // Add click handler for delete button
+        deleteBtn.addEventListener('click', function() {
+          var fileIndex = parseInt(this.getAttribute('data-file-index'));
+          var dt = new DataTransfer();
+          var currentFiles = input.files;
+          
+          // Remove the file from the input
+          for (var i = 0; i < currentFiles.length; i++) {
+            if (i !== fileIndex) {
+              dt.items.add(currentFiles[i]);
+            }
+          }
+          input.files = dt.files;
+          
+          // Remove the preview container
+          container.remove();
+        });
+        
+        // Assemble the container
+        imgContainer.appendChild(img);
+        container.appendChild(imgContainer);
+        container.appendChild(deleteBtn);
+        preview.appendChild(container);
+        
+        // Read the file and set the image source
         var reader = new FileReader();
         reader.onload = function(ev) {
-          var container = document.createElement('div');
-          container.className = 'relative group';
-          
-          var imgContainer = document.createElement('div');
-          imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
-          
-          var img = document.createElement('img');
-          img.className = 'w-full h-full object-cover';
           img.src = ev.target.result;
-          
-          // Create delete button for new images
-          var deleteBtn = document.createElement('button');
-          deleteBtn.type = 'button';
-          deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
-          deleteBtn.setAttribute('data-file-index', index);
-          deleteBtn.setAttribute('aria-label', 'Remove image');
-          deleteBtn.innerHTML = `
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          `;
-          
-          // Add click handler for delete button
-          deleteBtn.addEventListener('click', function() {
-            var fileIndex = parseInt(this.getAttribute('data-file-index'));
-            var dt = new DataTransfer();
-            var files = input.files;
-            
-            // Remove the file from the input
-            for (var i = 0; i < files.length; i++) {
-              if (i !== fileIndex) {
-                dt.items.add(files[i]);
-              }
-            }
-            input.files = dt.files;
-            
-            // Remove the preview container
-            container.remove();
-          });
-          
-          imgContainer.appendChild(img);
-          container.appendChild(imgContainer);
-          container.appendChild(deleteBtn);
-          preview.appendChild(container);
         };
         reader.readAsDataURL(file);
       });
