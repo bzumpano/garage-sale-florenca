@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
   end
-  devise_for :users
+  devise_for :users, skip: [:registrations]
   resources :products do
     member do
       post :mark_as_sold
