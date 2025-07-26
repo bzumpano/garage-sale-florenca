@@ -8,6 +8,37 @@
 </div>
 
 <% if user_signed_in? && current_user.admin? %>
+  <!-- Admin Tabs -->
+  <div class="mb-6">
+    <div class="border-b border-gray-200 dark:border-gray-700">
+      <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+        <% 
+          for_sale_active = @tab == 'for_sale' || @tab.nil?
+          for_sale_classes = for_sale_active ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+        %>
+        <%= link_to products_path(tab: 'for_sale'), 
+            class: "whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm #{for_sale_classes}" do %>
+          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+          </svg>
+          <%= t('products.index.tabs.for_sale') %>
+        <% end %>
+        
+        <% 
+          sold_active = @tab == 'sold'
+          sold_classes = sold_active ? 'border-blue-500 text-blue-600 dark:text-blue-400' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+        %>
+        <%= link_to products_path(tab: 'sold'), 
+            class: "whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm #{sold_classes}" do %>
+          <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <%= t('products.index.tabs.sold') %>
+        <% end %>
+      </nav>
+    </div>
+  </div>
+
   <div class="mb-6">
     <%= link_to new_product_path, class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
       <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -16,6 +47,8 @@
       <%= t('products.index.new') %>
     <% end %>
   </div>
+<% else %>
+  <!-- Non-admin users see the same view as before -->
 <% end %>
 
 <div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -25,17 +58,25 @@
     <div class="col-span-full">
       <div class="text-center py-16">
         <div class="flex flex-col items-center">
-          <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-          </svg>
-          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum item disponível</h3>
-          <p class="text-gray-500 dark:text-gray-400 mb-4">Não há produtos cadastrados no momento.</p>
-          <% if user_signed_in? && current_user.admin? %>
-            <%= link_to new_product_path, class: 'inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-              </svg>
-              Adicionar primeiro produto
+          <% if user_signed_in? && current_user.admin? && @tab == 'sold' %>
+            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum produto vendido</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">Não há produtos marcados como vendidos no momento.</p>
+          <% else %>
+            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum item disponível</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-4">Não há produtos cadastrados no momento.</p>
+            <% if user_signed_in? && current_user.admin? %>
+              <%= link_to new_product_path, class: 'inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Adicionar primeiro produto
+              <% end %>
             <% end %>
           <% end %>
         </div>
@@ -46,7 +87,7 @@
 
 <% if @products.any? %>
   <div class="mt-8">
-    <%= paginate @products, remote: true %>
+    <%= paginate @products, remote: true, params: { tab: @tab } %>
   </div>
 <% end %>
 

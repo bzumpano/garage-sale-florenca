@@ -42,6 +42,9 @@ pt-BR:
       price: "Preço"
       see_details: "Ver detalhes"
       no_items: "Nenhum item disponível."
+      tabs:
+        for_sale: "Produtos à venda"
+        sold: "Produtos vendidos"
     show:
       mark_as_sold: "Marcar como vendido"
       unmark_as_sold: "Desmarcar como vendido"

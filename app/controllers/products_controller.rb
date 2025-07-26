@@ -5,7 +5,20 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.where(sold: false).order(created_at: :desc).page(params[:page]).per(20)
+    if user_signed_in? && current_user.admin?
+      # Admin can see both tabs
+      @tab = params[:tab] || 'for_sale'
+      case @tab
+      when 'sold'
+        @products = Product.where(sold: true).order(created_at: :desc).page(params[:page]).per(20)
+      else
+        @products = Product.where(sold: false).order(created_at: :desc).page(params[:page]).per(20)
+      end
+    else
+      # Non-logged users only see products for sale
+      @products = Product.where(sold: false).order(created_at: :desc).page(params[:page]).per(20)
+    end
+    
     respond_to do |format|
       format.html
       format.json { render json: @products }
