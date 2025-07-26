@@ -27,7 +27,9 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
+    create_params = product_params.except(:images, :remove_image_ids)
+    @product = Product.new(create_params)
+    
     if product_params[:images]
       if product_params[:images].size > 20
         flash.now[:alert] = 'Máximo de 20 imagens por item.'
