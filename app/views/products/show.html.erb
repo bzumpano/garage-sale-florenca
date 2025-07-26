@@ -206,7 +206,7 @@
 </div>
 
 <!-- Flowbite Modal -->
-<div id="confirm-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="confirm-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-black bg-opacity-50">
   <div class="relative p-4 w-full max-w-md max-h-full">
     <!-- Modal content -->
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -215,7 +215,7 @@
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
           Confirmação
         </h3>
-        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="confirm-modal">
+        <button type="button" id="close-modal-btn" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
           </svg>
@@ -278,14 +278,31 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       };
-      // Show modal using Flowbite's global API
+      // Show modal - try multiple approaches for mobile compatibility
+      console.log('Attempting to show modal');
+      
+      // First try Flowbite's global API
       if (typeof window.Modal !== 'undefined') {
+        console.log('Using Flowbite Modal API');
         const modalInstance = new window.Modal(modal);
         modalInstance.show();
       } else {
-        // Fallback: show modal manually
+        console.log('Using manual modal display');
+        // Fallback: show modal manually with better mobile support
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        
+        // Ensure modal is visible on mobile
+        modal.style.display = 'flex';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.bottom = '0';
+        modal.style.zIndex = '9999';
+        
+        // Prevent body scroll on mobile
+        document.body.style.overflow = 'hidden';
       }
     });
   }
@@ -313,22 +330,77 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       };
-      // Show modal using Flowbite's global API
+      // Show modal - try multiple approaches for mobile compatibility
+      console.log('Attempting to show modal');
+      
+      // First try Flowbite's global API
       if (typeof window.Modal !== 'undefined') {
+        console.log('Using Flowbite Modal API');
         const modalInstance = new window.Modal(modal);
         modalInstance.show();
       } else {
-        // Fallback: show modal manually
+        console.log('Using manual modal display');
+        // Fallback: show modal manually with better mobile support
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        
+        // Ensure modal is visible on mobile
+        modal.style.display = 'flex';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.bottom = '0';
+        modal.style.zIndex = '9999';
+        
+        // Prevent body scroll on mobile
+        document.body.style.overflow = 'hidden';
       }
     });
   }
 
+  // Modal close functionality
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const cancelModalBtn = document.querySelector('[data-modal-hide="confirm-modal"]');
+  
+  function hideModal() {
+    console.log('Hiding modal');
+    if (typeof window.Modal !== 'undefined') {
+      const modalInstance = new window.Modal(modal);
+      modalInstance.hide();
+    } else {
+      // Manual hide
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+  
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', hideModal);
+  }
+  
+  if (cancelModalBtn) {
+    cancelModalBtn.addEventListener('click', hideModal);
+  }
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      hideModal();
+    }
+  });
+
   // Delete product functionality
   const deleteProductBtn = document.getElementById('delete-product-btn');
   if (deleteProductBtn) {
-    deleteProductBtn.addEventListener('click', function() {
+    deleteProductBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      console.log('Delete button clicked');
+      
       // Set delete styling (red button)
       confirmActionBtn.className = 'text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800';
       
@@ -350,14 +422,32 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
       };
-      // Show modal using Flowbite's global API
+      
+      // Show modal - try multiple approaches for mobile compatibility
+      console.log('Attempting to show modal');
+      
+      // First try Flowbite's global API
       if (typeof window.Modal !== 'undefined') {
+        console.log('Using Flowbite Modal API');
         const modalInstance = new window.Modal(modal);
         modalInstance.show();
       } else {
-        // Fallback: show modal manually
+        console.log('Using manual modal display');
+        // Fallback: show modal manually with better mobile support
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        
+        // Ensure modal is visible on mobile
+        modal.style.display = 'flex';
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.right = '0';
+        modal.style.bottom = '0';
+        modal.style.zIndex = '9999';
+        
+        // Prevent body scroll on mobile
+        document.body.style.overflow = 'hidden';
       }
     });
   }
