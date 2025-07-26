@@ -1,23 +1,40 @@
 <h1 class="text-2xl font-bold text-gray-800 mb-6"><%= t('admin.users.title') %></h1>
-<%= link_to t('admin.users.new'), new_admin_user_path, class: 'inline-block mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
-<table class="min-w-full bg-white rounded shadow overflow-hidden">
-  <thead class="bg-gray-100">
-    <tr>
-      <th class="px-4 py-2 text-left text-gray-700 font-semibold"><%= t('activerecord.attributes.user.email') %></th>
-      <th class="px-4 py-2 text-left text-gray-700 font-semibold"><%= t('admin.users.actions') %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
-      <tr class="border-b last:border-b-0">
-        <td class="px-4 py-2"><%= user.email %></td>
-        <td class="px-4 py-2 flex gap-2">
-          <%= link_to t('common.edit'), edit_admin_user_path(user), class: 'px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition' %>
-          <% unless user == current_user %>
-            <%= link_to t('admin.users.remove'), admin_user_path(user), method: :delete, data: { confirm: t('admin.users.confirm_remove') }, class: 'px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition' %>
-          <% end %>
-        </td>
+<%= link_to t('admin.users.new'), new_admin_user_path, class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-4' %>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <tr>
+        <th scope="col" class="px-6 py-3"><%= t('activerecord.attributes.user.email') %></th>
+        <th scope="col" class="px-6 py-3"><%= t('admin.users.actions') %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= user.email %>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2">
+              <%= link_to edit_admin_user_path(user), class: 'inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-yellow-700 rounded-lg hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-800' do %>
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                <%= t('common.edit') %>
+              <% end %>
+              <% unless user == current_user %>
+                <%= link_to admin_user_path(user), method: :delete, data: { confirm: t('admin.users.confirm_remove') }, class: 'inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800' do %>
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                  <%= t('admin.users.remove') %>
+                <% end %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -19,31 +19,65 @@
     <%= javascript_importmap_tags %>
   </head>
   <body class="bg-gray-50 min-h-screen">
-    <nav class="bg-white shadow mb-8">
-      <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between">
-        <div class="flex items-center gap-4">
-          <%= link_to t('app.title'), root_path, class: 'text-xl font-bold text-gray-800 hover:text-blue-600' %>
+    <!-- Flowbite Navbar -->
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+      <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="flex items-center space-x-3">
+          <%= link_to t('app.title'), root_path, class: 'self-center text-2xl font-semibold whitespace-nowrap dark:text-white' %>
           <% if user_signed_in? && current_user.admin? %>
-            <%= link_to t('admin.users.title'), admin_users_path, class: 'ml-4 text-gray-600 hover:text-blue-600' %>
+            <%= link_to t('admin.users.title'), admin_users_path, class: 'text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500' %>
           <% end %>
         </div>
-        <div class="flex items-center gap-4 mt-2 sm:mt-0">
+        <div class="flex items-center space-x-3">
           <% if user_signed_in? %>
-            <%= link_to t('app.logout'), destroy_user_session_path, method: :delete, class: 'text-gray-600 hover:text-blue-600' %>
+            <%= link_to t('app.logout'), destroy_user_session_path, method: :delete, class: 'text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500' %>
           <% else %>
-            <%= link_to t('app.login'), new_user_session_path, class: 'text-gray-600 hover:text-blue-600' %>
+            <%= link_to t('app.login'), new_user_session_path, class: 'text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500' %>
           <% end %>
         </div>
       </div>
     </nav>
+    
     <div class="container mx-auto px-4">
       <%= render 'layouts/breadcrumbs' %>
+      
+      <!-- Flowbite Alerts -->
       <% if notice %>
-        <div class="mb-4 p-4 rounded bg-green-100 text-green-800 border border-green-200"> <%= notice %> </div>
+        <div id="alert-success" class="flex p-4 mb-4 text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div class="ms-3 text-sm font-medium">
+            <%= notice %>
+          </div>
+          <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-success" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+          </button>
+        </div>
       <% end %>
+      
       <% if alert %>
-        <div class="mb-4 p-4 rounded bg-red-100 text-red-800 border border-red-200"> <%= alert %> </div>
+        <div id="alert-danger" class="flex p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+          <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+          </svg>
+          <span class="sr-only">Info</span>
+          <div class="ms-3 text-sm font-medium">
+            <%= alert %>
+          </div>
+          <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-danger" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+          </button>
+        </div>
       <% end %>
+      
       <%= yield %>
     </div>
   </body>

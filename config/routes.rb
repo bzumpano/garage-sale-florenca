@@ -21,5 +21,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root to: 'products#index'
+  get '/home', to: 'pages#home', as: :home
   get '/sign_out_success', to: 'pages#sign_out', as: :sign_out_success
 end

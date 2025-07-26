@@ -5,15 +5,21 @@
 <h1 class="text-2xl font-bold mb-6 text-gray-800"><%= t('products.index.title') %></h1>
 <% if user_signed_in? && current_user.admin? %>
   <div class="mb-6">
-    <%= link_to raw('<i class="fa-solid fa-plus mr-2"></i>' + t('products.index.new')), new_product_path, class: 'inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
+    <%= link_to raw('<i class="fa-solid fa-plus mr-2"></i>' + t('products.index.new')), new_product_path, class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' %>
   </div>
 <% end %>
 <div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
   <% if @products.any? %>
     <%= render @products %>
   <% else %>
-    <div class="col-span-full text-center py-16 text-gray-400 text-lg empty-state">
-      <%= t('products.index.no_items', default: 'Nenhum item disponível.') %>
+    <div class="col-span-full text-center py-16">
+      <div class="flex flex-col items-center">
+        <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum item disponível</h3>
+        <p class="text-gray-500 dark:text-gray-400">Não há produtos cadastrados no momento.</p>
+      </div>
     </div>
   <% end %>
 </div>
