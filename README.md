@@ -17,7 +17,7 @@ A platform to display items for sale, like an online Garage Sale.
 - [rbenv](https://github.com/rbenv/rbenv) for Ruby version management
 - Ruby 3.4.4
 - Node.js & Yarn
-- PostgreSQL 16 (recommended)
+- PostgreSQL 16 (required)
 
 ## Install PostgreSQL (macOS/Homebrew)
 ```bash
@@ -45,7 +45,9 @@ brew services start postgresql@16
    Then edit the `.env.development` and `.env.test` files with your actual values.
 4. **Setup the database:**
    ```bash
-   rails db:setup
+   rails db:create
+   rails db:migrate
+   rails db:seed
    ```
 5. **Start the server:**
    ```bash
