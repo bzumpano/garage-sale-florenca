@@ -51,9 +51,17 @@
   <!-- Non-admin users see the same view as before -->
 <% end %>
 
+
+
 <div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   <% if @products.any? %>
-    <%= render @products %>
+    <% if user_signed_in? && current_user.admin? && @tab == 'sold' %>
+      <% @products.each do |product| %>
+        <%= render partial: 'sold_product', locals: { product: product } %>
+      <% end %>
+    <% else %>
+      <%= render @products %>
+    <% end %>
   <% else %>
     <div class="col-span-full">
       <div class="text-center py-16">
