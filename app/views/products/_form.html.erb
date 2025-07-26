@@ -105,7 +105,8 @@
                accept="image/*" 
                multiple 
                data-direct-upload="true" 
-               class="hidden" />
+               class="hidden" 
+               style="position: absolute; opacity: 0; pointer-events: none; z-index: -1; display: none;" />
       </label>
     </div>
     
@@ -189,155 +190,441 @@ function setupProductFormImageUpload() {
   function getCurrentImageCount() {
     let existing = document.querySelectorAll('#existing-images-preview .group:not([style*="display: none"])').length;
     let newFiles = input && input.files ? input.files.length : 0;
-    return existing + newFiles;
+    let previewFiles = document.querySelectorAll('#uploaded-images-preview .group').length;
+    return existing + newFiles + previewFiles;
   }
 
-  if (input) {
-    input.addEventListener('change', function(e) {
-      // Clear the preview container completely
-      preview.innerHTML = '';
-      
-      let files = Array.from(input.files);
-      if (getCurrentImageCount() > MAX_IMAGES) {
-        alert('Máximo de 20 imagens por item.');
-        input.value = '';
+  // Function to show modal
+  function showModal() {
+    var modal = document.getElementById('image-source-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  // Function to hide modal
+  function hideModal() {
+    var modal = document.getElementById('image-source-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Function to append files to existing ones
+  function appendFilesToInput(newFiles) {
+    var dt = new DataTransfer();
+    var existingFiles = input.files;
+    
+    // Add existing files
+    for (var i = 0; i < existingFiles.length; i++) {
+      dt.items.add(existingFiles[i]);
+    }
+    
+    // Add new files
+    for (var i = 0; i < newFiles.length; i++) {
+      dt.items.add(newFiles[i]);
+    }
+    
+    // Temporarily disable the desktop handler to prevent it from processing these files
+    var wasProcessing = isProcessingDesktopFiles;
+    isProcessingDesktopFiles = true;
+    
+    // Set the files
+    input.files = dt.files;
+    
+    // Re-enable the desktop handler
+    isProcessingDesktopFiles = wasProcessing;
+  }
+
+  // Function to process new files without clearing existing preview
+  function processNewFiles(files, startIndex) {
+    files.forEach(function(file, index) {
+      if (!file.type.startsWith('image/')) {
+        alert('Apenas arquivos de imagem são permitidos.');
+        return;
+      }
+      if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+        alert('Cada imagem deve ter no máximo 10MB.');
         return;
       }
       
-      // Process each file only once
-      files.forEach(function(file, index) {
-        if (!file.type.startsWith('image/')) {
-          alert('Apenas arquivos de imagem são permitidos.');
-          input.value = '';
-          preview.innerHTML = '';
-          return;
-        }
-        if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-          alert('Cada imagem deve ter no máximo 10MB.');
-          input.value = '';
-          preview.innerHTML = '';
-          return;
-        }
-        
-        // Create container for this specific file
-        var container = document.createElement('div');
-        container.className = 'relative group';
-        container.setAttribute('data-file-index', index);
-        
-        var imgContainer = document.createElement('div');
-        imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
-        
-        var img = document.createElement('img');
-        img.className = 'w-full h-full object-cover';
-        
-        // Create delete button for new images
-        var deleteBtn = document.createElement('button');
-        deleteBtn.type = 'button';
-        deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
-        deleteBtn.setAttribute('data-file-index', index);
-        deleteBtn.setAttribute('aria-label', 'Remove image');
-        deleteBtn.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        `;
-        
-        // Add click handler for delete button
-        deleteBtn.addEventListener('click', function() {
-          var fileIndex = parseInt(this.getAttribute('data-file-index'));
-          var dt = new DataTransfer();
-          var currentFiles = input.files;
-          
-          // Remove the file from the input
-          for (var i = 0; i < currentFiles.length; i++) {
-            if (i !== fileIndex) {
-              dt.items.add(currentFiles[i]);
-            }
-          }
-          input.files = dt.files;
-          
-          // Remove the preview container
-          container.remove();
-        });
-        
-        // Assemble the container
-        imgContainer.appendChild(img);
-        container.appendChild(imgContainer);
-        container.appendChild(deleteBtn);
-        preview.appendChild(container);
-        
-        // Read the file and set the image source
-        var reader = new FileReader();
-        reader.onload = function(ev) {
-          img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
+      // Create container for this specific file
+      var container = document.createElement('div');
+      container.className = 'relative group';
+      container.setAttribute('data-file-index', startIndex + index);
+      
+      var imgContainer = document.createElement('div');
+      imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
+      
+      var img = document.createElement('img');
+      img.className = 'w-full h-full object-cover';
+      
+      // Create delete button for new images
+      var deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
+      deleteBtn.setAttribute('data-file-index', startIndex + index);
+      deleteBtn.setAttribute('aria-label', 'Remove image');
+      deleteBtn.innerHTML = `
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      `;
+      
+      // Add click handler for delete button
+      deleteBtn.addEventListener('click', function() {
+        container.remove();
       });
+      
+      // Assemble the container
+      imgContainer.appendChild(img);
+      container.appendChild(imgContainer);
+      container.appendChild(deleteBtn);
+      preview.appendChild(container);
+      
+      // Read the file and set the image source
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
     });
   }
 
-  // Mobile: modal for Gallery or Camera
+  // Flags to prevent issues
+  var isUsingTemporaryInput = false;
+  var mobileModalUsed = false;
+  var isProgrammaticClick = false;
+  var isProcessingDesktopFiles = false;
+
+  if (input) {
+    input.addEventListener('click', function(e) {
+      if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches && !isProgrammaticClick && !isUsingTemporaryInput && !mobileModalUsed) {
+        // Mobile: show modal
+        e.preventDefault();
+        showModal();
+      }
+    });
+    
+    // Also prevent the original input from being triggered by the label
+    var label = document.querySelector('label[for="product-images-input"]');
+    if (label) {
+      label.addEventListener('click', function(e) {
+        if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches && !isProgrammaticClick && !isUsingTemporaryInput && !mobileModalUsed) {
+          e.preventDefault();
+          showModal();
+        }
+      });
+    }
+  }
+
+  // Modal functionality
   var modal = document.getElementById('image-source-modal');
   var cameraRow = document.getElementById('choose-camera-row');
   var galleryRow = document.getElementById('choose-gallery-row');
   var closeModalBtn = document.getElementById('close-image-source-modal');
   var closeModalBtnX = document.getElementById('close-image-source-modal-x');
 
-  if (input) {
-    input.addEventListener('click', function(e) {
-      if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
-        // Mobile: show modal
-        e.preventDefault();
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  }
-
   if (modal && cameraRow && galleryRow && closeModalBtn && input) {
-    cameraRow.onclick = function() {
-      input.removeAttribute('multiple');
-      input.setAttribute('capture', 'environment');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-      input.click();
-    };
-    galleryRow.onclick = function() {
-      input.setAttribute('multiple', 'multiple');
-      input.removeAttribute('capture');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-      input.click();
-    };
-    closeModalBtn.onclick = function(e) {
+    
+    cameraRow.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    };
+      e.stopImmediatePropagation();
+      console.log('Camera option clicked');
+      
+      // Prevent multiple clicks
+      if (cameraRow._isProcessing) {
+        console.log('Camera click already processing, ignoring');
+        return;
+      }
+      cameraRow._isProcessing = true;
+      
+      hideModal();
+      
+      // Set flags to prevent original input interference
+      isUsingTemporaryInput = true;
+      mobileModalUsed = true;
+      
+      // Completely disable the original input to prevent any interference
+      if (input) {
+        input.disabled = true;
+        input.style.display = 'none';
+      }
+      
+      // Create a temporary file input for camera
+      var tempInput = document.createElement('input');
+      tempInput.type = 'file';
+      tempInput.accept = 'image/*';
+      tempInput.capture = 'environment';
+      tempInput.style.position = 'absolute';
+      tempInput.style.opacity = '0';
+      tempInput.style.pointerEvents = 'none';
+      
+      tempInput.addEventListener('change', function(e) {
+        console.log('Mobile camera handler triggered');
+        // Process files
+        if (e.target.files.length > 0) {
+          let files = Array.from(e.target.files);
+          
+          // Check if adding these files would exceed the limit
+          let currentCount = getCurrentImageCount();
+          if (currentCount + files.length > MAX_IMAGES) {
+            alert('Máximo de 20 imagens por item.');
+            return;
+          }
+          
+          // Add files to the original input for form submission
+          appendFilesToInput(files);
+          
+          // Process new files using the helper function
+          var startIndex = 0;
+          processNewFiles(files, startIndex);
+        }
+        // Clean up
+        document.body.removeChild(tempInput);
+        isUsingTemporaryInput = false;
+        cameraRow._isProcessing = false;
+        
+        // Re-enable the original input for form submission
+        if (input) {
+          input.disabled = false;
+          input.style.display = '';
+        }
+      });
+      
+      document.body.appendChild(tempInput);
+      tempInput.click();
+    });
+    
+    galleryRow.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      console.log('Gallery option clicked');
+      
+      // Prevent multiple clicks
+      if (galleryRow._isProcessing) {
+        console.log('Gallery click already processing, ignoring');
+        return;
+      }
+      galleryRow._isProcessing = true;
+      
+      hideModal();
+      
+      // Set flags to prevent original input interference
+      isUsingTemporaryInput = true;
+      mobileModalUsed = true;
+      
+      // Completely disable the original input to prevent any interference
+      if (input) {
+        input.disabled = true;
+        input.style.display = 'none';
+      }
+      
+      // Create a temporary file input for gallery
+      var tempInput = document.createElement('input');
+      tempInput.type = 'file';
+      tempInput.accept = 'image/*';
+      tempInput.multiple = true;
+      tempInput.style.position = 'absolute';
+      tempInput.style.opacity = '0';
+      tempInput.style.pointerEvents = 'none';
+      
+      tempInput.addEventListener('change', function(e) {
+        console.log('Mobile gallery handler triggered');
+        // Process files
+        if (e.target.files.length > 0) {
+          let files = Array.from(e.target.files);
+          
+          // Check if adding these files would exceed the limit
+          let currentCount = getCurrentImageCount();
+          if (currentCount + files.length > MAX_IMAGES) {
+            alert('Máximo de 20 imagens por item.');
+            return;
+          }
+          
+          // Add files to the original input for form submission
+          appendFilesToInput(files);
+          
+          // Process new files using the helper function
+          var startIndex = 0;
+          processNewFiles(files, startIndex);
+        }
+        // Clean up
+        document.body.removeChild(tempInput);
+        isUsingTemporaryInput = false;
+        galleryRow._isProcessing = false;
+        
+        // Re-enable the original input for form submission
+        if (input) {
+          input.disabled = false;
+          input.style.display = '';
+        }
+      });
+      
+      document.body.appendChild(tempInput);
+      tempInput.click();
+    });
+    
+    closeModalBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      hideModal();
+    });
+    
     if (closeModalBtnX) {
-      closeModalBtnX.onclick = function(e) {
+      closeModalBtnX.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
-      };
+        hideModal();
+      });
     }
+    
     modal.addEventListener('click', function(e) {
       if (e.target === modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
+        hideModal();
       }
     });
+  } else if (modal || cameraRow || galleryRow || closeModalBtn || input) {
+    // Only log error if we're on a page that should have these elements
+    console.error('Some modal elements not found:', {
+      modal: !!modal,
+      cameraRow: !!cameraRow,
+      galleryRow: !!galleryRow,
+      closeModalBtn: !!closeModalBtn,
+      input: !!input
+    });
   }
+
+  // Handle original file input for desktop
+  if (input && !input.hasAttribute('data-desktop-handler-attached')) {
+    input.setAttribute('data-desktop-handler-attached', 'true');
+    
+    var originalInputChangeHandler = function(e) {
+      console.log('Desktop handler triggered:', {
+        isMobile: window.matchMedia && window.matchMedia('(max-width: 640px)').matches,
+        isUsingTemporaryInput: isUsingTemporaryInput,
+        mobileModalUsed: mobileModalUsed,
+        isProcessingDesktopFiles: isProcessingDesktopFiles
+      });
+      
+      // Only process on desktop (not mobile) and when not using temporary inputs
+      if ((!window.matchMedia || !window.matchMedia('(max-width: 640px)').matches) && !isUsingTemporaryInput) {
+        // Set flag immediately to prevent duplicate processing
+        if (isProcessingDesktopFiles) {
+          console.log('Already processing desktop files, skipping');
+          return;
+        }
+        
+        isProcessingDesktopFiles = true;
+        
+        let files = Array.from(e.target.files);
+        if (getCurrentImageCount() > MAX_IMAGES) {
+          alert('Máximo de 20 imagens por item.');
+          input.value = '';
+          isProcessingDesktopFiles = false;
+          return;
+        }
+        
+        // Process each file
+        files.forEach(function(file, index) {
+          if (!file.type.startsWith('image/')) {
+            alert('Apenas arquivos de imagem são permitidos.');
+            input.value = '';
+            return;
+          }
+          if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+            alert('Cada imagem deve ter no máximo 10MB.');
+            input.value = '';
+            return;
+          }
+          
+          // Create container for this specific file
+          var container = document.createElement('div');
+          container.className = 'relative group';
+          container.setAttribute('data-file-index', index);
+          
+          var imgContainer = document.createElement('div');
+          imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
+          
+          var img = document.createElement('img');
+          img.className = 'w-full h-full object-cover';
+          
+          // Create delete button for new images
+          var deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
+          deleteBtn.setAttribute('data-file-index', index);
+          deleteBtn.setAttribute('aria-label', 'Remove image');
+          deleteBtn.innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          `;
+          
+          // Add click handler for delete button
+          deleteBtn.addEventListener('click', function() {
+            container.remove();
+          });
+          
+          // Assemble the container
+          imgContainer.appendChild(img);
+          container.appendChild(imgContainer);
+          container.appendChild(deleteBtn);
+          preview.appendChild(container);
+          
+          // Read the file and set the image source
+          var reader = new FileReader();
+          reader.onload = function(ev) {
+            img.src = ev.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+        
+        // Reset the flag after processing
+        isProcessingDesktopFiles = false;
+      }
+    };
+    
+    input.addEventListener('change', originalInputChangeHandler);
+  }
+
+  // Simple fix: Disable original input on mobile when modal is used
+  document.addEventListener('click', function(e) {
+    if (e.target && (e.target.id === 'choose-camera-row' || e.target.id === 'choose-gallery-row')) {
+      // Prevent event from bubbling up
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      
+      // Disable the original input completely on mobile
+      var originalInput = document.getElementById('product-images-input');
+      if (originalInput && window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
+        originalInput.style.display = 'none';
+        originalInput.style.position = 'absolute';
+        originalInput.style.left = '-9999px';
+        originalInput.style.opacity = '0';
+        originalInput.style.pointerEvents = 'none';
+        originalInput.disabled = true;
+      }
+    }
+  });
 }
 
+// Initialize on multiple events to ensure it works with Turbo
 document.addEventListener('turbo:load', setupProductFormImageUpload);
 document.addEventListener('DOMContentLoaded', setupProductFormImageUpload);
+document.addEventListener('turbo:render', setupProductFormImageUpload);
+
+// Also try to initialize immediately if DOM is already ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupProductFormImageUpload);
+} else {
+  setupProductFormImageUpload();
+}
 </script>
