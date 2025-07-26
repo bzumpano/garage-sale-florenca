@@ -34,13 +34,13 @@ production:
     database: garage_sale_florenca_production
   cache:
     <<: *default
-    database: garage_sale_florenca_production_cache
+    database: garage_sale_florenca_production
     migrations_paths: db/cache_migrate
   queue:
     <<: *default
-    database: garage_sale_florenca_production_queue
+    database: garage_sale_florenca_production
     migrations_paths: db/queue_migrate
   cable:
     <<: *default
-    database: garage_sale_florenca_production_cable
+    database: garage_sale_florenca_production
     migrations_paths: db/cable_migrate
