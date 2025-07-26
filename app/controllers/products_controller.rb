@@ -56,11 +56,12 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    if product_params[:images]&.size.to_i > 20
-      flash.now[:alert] = 'Máximo de 20 fotos por item.'
-      render :edit and return
-    end
-    if product_params[:images]
+    # Validate new images if any are being uploaded
+    if product_params[:images]&.any?
+      if product_params[:images].size > 20
+        flash.now[:alert] = 'Máximo de 20 fotos por item.'
+        render :edit and return
+      end
       product_params[:images].each do |img|
         if img.size > 10.megabytes
           flash.now[:alert] = 'Cada imagem deve ter no máximo 10MB.'
@@ -72,19 +73,25 @@ class ProductsController < ApplicationController
         end
       end
     end
+    
     # Remove images if requested
-    if params[:product][:remove_image_ids].present?
-      remove_ids = Array(params[:product][:remove_image_ids]).reject(&:blank?).map(&:to_i)
+    if product_params[:remove_image_ids].present?
+      remove_ids = product_params[:remove_image_ids].split(',').map(&:strip).reject(&:blank?).map(&:to_i)
       @product.images.each do |img|
         img.purge if remove_ids.include?(img.id)
       end
     end
+    
     # If new images are attached, append them
-    if product_params[:images]
+    if product_params[:images]&.any?
       @product.images.attach(product_params[:images])
     end
-    # Update other attributes (excluding images, which are handled above)
-    if @product.update(product_params.except(:images))
+    
+    # Update other attributes (excluding images and remove_image_ids which are handled above)
+    update_params = product_params.except(:images, :remove_image_ids)
+    
+    # Save the product first to ensure all changes are persisted
+    if @product.update(update_params)
       redirect_to @product, notice: t('flash.products.updated')
     else
       render :edit
@@ -127,7 +134,7 @@ class ProductsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def product_params
-      params.require(:product).permit(:name, :price, :details, images: [])
+      params.require(:product).permit(:name, :price, :details, :remove_image_ids, images: [])
     end
 
     def require_admin!

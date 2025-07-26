@@ -1,13 +1,13 @@
-<%= form_with(model: product, local: true, html: { class: 'space-y-6 bg-white p-6 rounded-lg shadow-lg max-w-xl mx-auto', multipart: true, data: { direct_upload: true } }) do |form| %>
+<%= form_with(model: product, local: true, html: { class: 'max-w-2xl mx-auto space-y-6', multipart: true, data: { direct_upload: true } }) do |form| %>
   <% if product.errors.any? %>
-    <div class="flex p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+    <div class="flex p-4 mb-6 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
       <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
       </svg>
       <span class="sr-only">Error</span>
       <div class="ms-3 text-sm font-medium">
         <h2 class="font-bold mb-2"><%= pluralize(product.errors.count, "erro") %> proibiu este produto de ser salvo:</h2>
-        <ul class="list-disc pl-5">
+        <ul class="list-disc pl-5 space-y-1">
           <% product.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
@@ -16,54 +16,112 @@
     </div>
   <% end %>
   
-  <div>
-    <%= form.label :name, t('products.form.name'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.text_field :name, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', required: true %>
+  <!-- Product Name with Floating Label -->
+  <div class="relative z-0 w-full group">
+    <%= form.text_field :name, 
+        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer #{'border-red-500 dark:border-red-500' if product.errors[:name].any?}", 
+        placeholder: " ", 
+        required: true %>
+    <%= form.label :name, t('products.form.name'), 
+        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:name].any?}" %>
+    <% if product.errors[:name].any? %>
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:name].first %></p>
+    <% end %>
   </div>
   
-  <div>
-    <%= form.label :details, t('products.form.details'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.rich_text_area :details, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 trix-content' %>
+  <!-- Product Price with Floating Label -->
+  <div class="relative z-0 w-full group">
+    <%= form.number_field :price, 
+        step: '0.01', 
+        min: '0', 
+        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer #{'border-red-500 dark:border-red-500' if product.errors[:price].any?}", 
+        placeholder: " ", 
+        required: true %>
+    <%= form.label :price, t('products.form.price'), 
+        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:price].any?}" %>
+    <% if product.errors[:price].any? %>
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:price].first %></p>
+    <% end %>
   </div>
   
-  <div>
-    <%= form.label :price, t('products.form.price'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.text_field :price, type: 'number', inputmode: 'decimal', step: '0.01', min: '0', class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', id: 'product_price', autocomplete: 'off', required: true %>
+  <!-- Product Details with Floating Label -->
+  <div class="relative z-0 w-full group">
+    <%= form.rich_text_area :details, 
+        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer trix-content #{'border-red-500 dark:border-red-500' if product.errors[:details].any?}", 
+        placeholder: " " %>
+    <%= form.label :details, t('products.form.details'), 
+        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:details].any?}" %>
+    <% if product.errors[:details].any? %>
+      <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:details].first %></p>
+    <% end %>
   </div>
   
-  <div>
-    <%= form.label :images, t('products.form.images', default: 'Imagens'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <div id="uploaded-images-preview" class="flex flex-wrap gap-4 mt-2"></div>
+  <!-- Hidden field for remove_image_ids -->
+  <%= form.hidden_field :remove_image_ids, value: '', id: 'remove_image_ids_field' %>
+  
+  <!-- Image Upload Section -->
+  <div class="space-y-4">
+    <label class="block text-sm font-medium text-gray-900 dark:text-white">
+      <%= t('products.form.images', default: 'Imagens') %>
+    </label>
+    
+    <!-- Existing Images Preview -->
     <% if product.images.attached? %>
-      <div class="flex flex-wrap gap-4 mt-4" id="existing-images-preview">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="existing-images-preview">
         <% product.images.each do |image| %>
           <div class="relative group">
-            <%= image_tag image.variant(resize_to_limit: [120, 120]), class: 'rounded-lg border w-24 h-24 object-cover' %>
-            <button type="button" class="absolute top-0 right-0 bg-white bg-opacity-80 rounded-full p-1 m-1 shadow text-red-600 hover:bg-opacity-100 transition remove-image-btn" data-image-id="<%= image.id %>">
+            <div class="aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600">
+              <%= image_tag image.variant(resize_to_fill: [120, 120]), 
+                  class: 'w-full h-full object-cover' %>
+            </div>
+            <button type="button" 
+                    class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-image-btn" 
+                    data-image-id="<%= image.id %>"
+                    aria-label="Remove image">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
-            <%= form.hidden_field :remove_image_ids, value: '', id: "remove_image_ids_#{image.id}" %>
           </div>
         <% end %>
       </div>
     <% end %>
-    <input type="file" id="product-images-input" name="product[images][]" accept="image/*" multiple data-direct-upload="true" class="hidden block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" style="max-width: 100%;" />
-    <button type="button" id="add-image-btn" class="mt-2 inline-flex items-center px-3 py-2 text-sm font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-      </svg>
-      Adicionar imagem
-    </button>
-    <div class="text-sm text-gray-500 mt-2">Máximo de 20 imagens, cada uma até 10MB. Apenas arquivos de imagem são permitidos.<br>Em dispositivos móveis, você pode tirar uma foto ou escolher da galeria. O navegador pode pedir permissão para acessar a câmera ou arquivos.</div>
     
-    <!-- Modal for mobile image source selection -->
+    <!-- New Images Preview -->
+    <div id="uploaded-images-preview" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+    
+    <!-- File Upload Input -->
+    <div class="flex items-center justify-center w-full">
+      <label for="product-images-input" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-500 dark:hover:border-gray-400">
+        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+          <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+          </svg>
+          <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+            <span class="font-semibold">Clique para fazer upload</span> ou arraste e solte
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF até 10MB cada</p>
+        </div>
+        <input id="product-images-input" 
+               name="product[images][]" 
+               type="file" 
+               accept="image/*" 
+               multiple 
+               data-direct-upload="true" 
+               class="hidden" />
+      </label>
+    </div>
+    
+    <!-- Helper Text -->
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+      <p>Máximo de 20 imagens, cada uma até 10MB. Apenas arquivos de imagem são permitidos.</p>
+      <p class="mt-1">Em dispositivos móveis, você pode tirar uma foto ou escolher da galeria.</p>
+    </div>
+    
+    <!-- Mobile Image Source Modal -->
     <div id="image-source-modal" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
       <div class="relative w-full max-w-md max-h-full">
-        <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-          <!-- Modal header -->
           <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
               Escolher fonte da imagem
@@ -75,7 +133,6 @@
               <span class="sr-only">Close modal</span>
             </button>
           </div>
-          <!-- Modal body -->
           <div class="p-4 md:p-5">
             <div class="space-y-4">
               <button type="button" id="choose-camera-row" class="w-full flex items-center p-4 text-left text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
@@ -93,7 +150,6 @@
               </button>
             </div>
           </div>
-          <!-- Modal footer -->
           <div class="flex items-center justify-end p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button type="button" id="close-image-source-modal" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
               Cancelar
@@ -104,20 +160,25 @@
     </div>
   </div>
   
-  <div>
-    <%= form.submit t('products.form.submit'), class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 hidden sm:inline-flex items-center' %>
+  <!-- Submit Button -->
+  <div class="flex justify-end">
+    <%= form.submit t('products.form.submit'), 
+        class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' %>
   </div>
 <% end %>
 
 <script>
 function setupProductFormImageUpload() {
-  // Remove image logic
+  var removeImageIdsField = document.getElementById('remove_image_ids_field');
+  var removedImageIds = [];
+
+  // Remove image logic for existing images
   document.querySelectorAll('.remove-image-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var imageId = btn.getAttribute('data-image-id');
-      var hiddenField = document.getElementById('remove_image_ids_' + imageId);
-      if (hiddenField) {
-        hiddenField.value = imageId;
+      if (imageId) {
+        removedImageIds.push(imageId);
+        removeImageIdsField.value = removedImageIds.join(',');
         btn.closest('.group').style.display = 'none';
       }
     });
@@ -125,7 +186,6 @@ function setupProductFormImageUpload() {
 
   var input = document.getElementById('product-images-input');
   var preview = document.getElementById('uploaded-images-preview');
-  var addBtn = document.getElementById('add-image-btn');
   const MAX_IMAGES = 20;
   const MAX_SIZE_MB = 10;
 
@@ -144,7 +204,7 @@ function setupProductFormImageUpload() {
         input.value = '';
         return;
       }
-      files.forEach(function(file) {
+      files.forEach(function(file, index) {
         if (!file.type.startsWith('image/')) {
           alert('Apenas arquivos de imagem são permitidos.');
           input.value = '';
@@ -157,10 +217,50 @@ function setupProductFormImageUpload() {
         }
         var reader = new FileReader();
         reader.onload = function(ev) {
+          var container = document.createElement('div');
+          container.className = 'relative group';
+          
+          var imgContainer = document.createElement('div');
+          imgContainer.className = 'aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600';
+          
           var img = document.createElement('img');
-          img.className = 'rounded-lg border w-24 h-24 object-cover mt-1';
+          img.className = 'w-full h-full object-cover';
           img.src = ev.target.result;
-          preview.appendChild(img);
+          
+          // Create delete button for new images
+          var deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.className = 'absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-lg transition-colors remove-new-image-btn';
+          deleteBtn.setAttribute('data-file-index', index);
+          deleteBtn.setAttribute('aria-label', 'Remove image');
+          deleteBtn.innerHTML = `
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          `;
+          
+          // Add click handler for delete button
+          deleteBtn.addEventListener('click', function() {
+            var fileIndex = parseInt(this.getAttribute('data-file-index'));
+            var dt = new DataTransfer();
+            var files = input.files;
+            
+            // Remove the file from the input
+            for (var i = 0; i < files.length; i++) {
+              if (i !== fileIndex) {
+                dt.items.add(files[i]);
+              }
+            }
+            input.files = dt.files;
+            
+            // Remove the preview container
+            container.remove();
+          });
+          
+          imgContainer.appendChild(img);
+          container.appendChild(imgContainer);
+          container.appendChild(deleteBtn);
+          preview.appendChild(container);
         };
         reader.readAsDataURL(file);
       });
@@ -174,19 +274,14 @@ function setupProductFormImageUpload() {
   var closeModalBtn = document.getElementById('close-image-source-modal');
   var closeModalBtnX = document.getElementById('close-image-source-modal-x');
 
-  if (addBtn && input) {
-    addBtn.addEventListener('click', function(e) {
+  if (input) {
+    input.addEventListener('click', function(e) {
       if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
         // Mobile: show modal
+        e.preventDefault();
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-        // Prevent background scroll
         document.body.style.overflow = 'hidden';
-      } else {
-        // Desktop: just open file picker
-        input.setAttribute('multiple', 'multiple');
-        input.removeAttribute('capture');
-        input.click();
       }
     });
   }
@@ -224,7 +319,6 @@ function setupProductFormImageUpload() {
         document.body.style.overflow = '';
       };
     }
-    // Dismiss modal on outside click
     modal.addEventListener('click', function(e) {
       if (e.target === modal) {
         modal.classList.add('hidden');
@@ -234,6 +328,7 @@ function setupProductFormImageUpload() {
     });
   }
 }
+
 document.addEventListener('turbo:load', setupProductFormImageUpload);
 document.addEventListener('DOMContentLoaded', setupProductFormImageUpload);
 </script>

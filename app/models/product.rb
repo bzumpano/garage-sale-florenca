@@ -5,7 +5,7 @@ class Product < ApplicationRecord
   attribute :sold, :boolean, default: false
   validates :name, presence: true
   validates :price, presence: true
-  validate :images_count_within_limit
+  validate :images_count_within_limit, on: :create
   validate :images_type_and_size
 
   private
