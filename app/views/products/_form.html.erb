@@ -16,41 +16,38 @@
     </div>
   <% end %>
   
-  <!-- Product Name with Floating Label -->
-  <div class="relative z-0 w-full group">
+  <!-- Product Name -->
+  <div class="mb-5">
+    <%= form.label :name, t('products.form.name'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
     <%= form.text_field :name, 
-        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer #{'border-red-500 dark:border-red-500' if product.errors[:name].any?}", 
-        placeholder: " ", 
+        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:name].any?}", 
+        placeholder: t('products.form.name_placeholder', default: 'Digite o nome do produto'), 
         required: true %>
-    <%= form.label :name, t('products.form.name'), 
-        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:name].any?}" %>
     <% if product.errors[:name].any? %>
       <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:name].first %></p>
     <% end %>
   </div>
   
-  <!-- Product Price with Floating Label -->
-  <div class="relative z-0 w-full group">
+  <!-- Product Price -->
+  <div class="mb-5">
+    <%= form.label :price, t('products.form.price'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
     <%= form.number_field :price, 
         step: '0.01', 
         min: '0', 
-        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer #{'border-red-500 dark:border-red-500' if product.errors[:price].any?}", 
-        placeholder: " ", 
+        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:price].any?}", 
+        placeholder: t('products.form.price_placeholder', default: '0.00'), 
         required: true %>
-    <%= form.label :price, t('products.form.price'), 
-        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:price].any?}" %>
     <% if product.errors[:price].any? %>
       <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:price].first %></p>
     <% end %>
   </div>
   
-  <!-- Product Details with Floating Label -->
-  <div class="relative z-0 w-full group">
+  <!-- Product Details -->
+  <div class="mb-5">
+    <%= form.label :details, t('products.form.details'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
     <%= form.rich_text_area :details, 
-        class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer trix-content #{'border-red-500 dark:border-red-500' if product.errors[:details].any?}", 
-        placeholder: " " %>
-    <%= form.label :details, t('products.form.details'), 
-        class: "peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 #{'text-red-500 dark:text-red-500' if product.errors[:details].any?}" %>
+        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 trix-content #{'border-red-500 dark:border-red-500' if product.errors[:details].any?}", 
+        placeholder: t('products.form.details_placeholder', default: 'Descreva o produto...') %>
     <% if product.errors[:details].any? %>
       <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:details].first %></p>
     <% end %>
@@ -60,14 +57,14 @@
   <%= form.hidden_field :remove_image_ids, value: '', id: 'remove_image_ids_field' %>
   
   <!-- Image Upload Section -->
-  <div class="space-y-4">
-    <label class="block text-sm font-medium text-gray-900 dark:text-white">
+  <div class="mb-5">
+    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
       <%= t('products.form.images', default: 'Imagens') %>
     </label>
     
     <!-- Existing Images Preview -->
     <% if product.images.attached? %>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="existing-images-preview">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-4" id="existing-images-preview">
         <% product.images.each do |image| %>
           <div class="relative group">
             <div class="aspect-square w-full overflow-hidden rounded-lg border-2 border-gray-200 dark:border-gray-600">
@@ -88,7 +85,7 @@
     <% end %>
     
     <!-- New Images Preview -->
-    <div id="uploaded-images-preview" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+    <div id="uploaded-images-preview" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-4"></div>
     
     <!-- File Upload Input -->
     <div class="flex items-center justify-center w-full">
@@ -113,7 +110,7 @@
     </div>
     
     <!-- Helper Text -->
-    <div class="text-sm text-gray-500 dark:text-gray-400">
+    <div class="mt-2 text-sm text-gray-500 dark:text-gray-400">
       <p>Máximo de 20 imagens, cada uma até 10MB. Apenas arquivos de imagem são permitidos.</p>
       <p class="mt-1">Em dispositivos móveis, você pode tirar uma foto ou escolher da galeria.</p>
     </div>

@@ -1,18 +1,43 @@
-<h1 class="text-2xl font-bold text-gray-800 mb-6"><%= t('admin.users.new') %></h1>
-<%= form_with(model: [:admin, @user], local: true, html: { class: 'space-y-6 bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto' }) do |form| %>
-  <div>
-    <%= form.label :email, t('activerecord.attributes.user.email'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.email_field :email, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' %>
+<% content_for :title, t('admin.users.new') %>
+
+<div class="max-w-2xl mx-auto">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2"><%= t('admin.users.new') %></h1>
+    <p class="text-gray-600 dark:text-gray-400">Adicione um novo usuário administrador ao sistema</p>
   </div>
-  <div>
-    <%= form.label :password, t('activerecord.attributes.user.password'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.password_field :password, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' %>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+    <%= form_with(model: [:admin, @user], local: true, html: { class: 'space-y-6' }) do |form| %>
+      <div>
+        <%= form.label :email, t('activerecord.attributes.user.email'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+        <%= form.email_field :email, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: 'usuario@exemplo.com' %>
+      </div>
+      
+      <div>
+        <%= form.label :password, t('activerecord.attributes.user.password'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+        <%= form.password_field :password, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '••••••••' %>
+      </div>
+      
+      <div>
+        <%= form.label :password_confirmation, t('activerecord.attributes.user.password_confirmation'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+        <%= form.password_field :password_confirmation, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', placeholder: '••••••••' %>
+      </div>
+      
+      <div class="flex items-center justify-between pt-4">
+        <%= form.submit t('admin.users.create'), class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          <%= t('admin.users.create') %>
+        <% end %>
+        
+        <%= link_to admin_users_path, class: 'inline-flex items-center text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300' do %>
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <%= t('common.back') %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= form.label :password_confirmation, t('activerecord.attributes.user.password_confirmation'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
-    <%= form.password_field :password_confirmation, class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' %>
-  </div>
-  <div>
-    <%= form.submit t('admin.users.create'), class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' %>
-  </div>
-<% end %>
+</div>

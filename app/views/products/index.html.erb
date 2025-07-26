@@ -1,31 +1,54 @@
 <p style="color: green"><%= notice %></p>
 
-<% content_for :title, "Products" %>
+<% content_for :title, t('products.index.title') %>
 
-<h1 class="text-2xl font-bold mb-6 text-gray-800"><%= t('products.index.title') %></h1>
+<div class="mb-6">
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2"><%= t('products.index.title') %></h1>
+  <p class="text-gray-600 dark:text-gray-400">Explore nossa coleção de produtos únicos</p>
+</div>
+
 <% if user_signed_in? && current_user.admin? %>
   <div class="mb-6">
-    <%= link_to raw('<i class="fa-solid fa-plus mr-2"></i>' + t('products.index.new')), new_product_path, class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' %>
+    <%= link_to new_product_path, class: 'inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
+      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+      <%= t('products.index.new') %>
+    <% end %>
   </div>
 <% end %>
-<div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+
+<div id="products-list" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   <% if @products.any? %>
     <%= render @products %>
   <% else %>
-    <div class="col-span-full text-center py-16">
-      <div class="flex flex-col items-center">
-        <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum item disponível</h3>
-        <p class="text-gray-500 dark:text-gray-400">Não há produtos cadastrados no momento.</p>
+    <div class="col-span-full">
+      <div class="text-center py-16">
+        <div class="flex flex-col items-center">
+          <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Nenhum item disponível</h3>
+          <p class="text-gray-500 dark:text-gray-400 mb-4">Não há produtos cadastrados no momento.</p>
+          <% if user_signed_in? && current_user.admin? %>
+            <%= link_to new_product_path, class: 'inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              Adicionar primeiro produto
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>
 </div>
-<div class="mt-8">
-  <%= paginate @products, remote: true %>
-</div>
+
+<% if @products.any? %>
+  <div class="mt-8">
+    <%= paginate @products, remote: true %>
+  </div>
+<% end %>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
