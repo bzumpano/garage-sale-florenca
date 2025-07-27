@@ -45,6 +45,8 @@ pt-BR:
       tabs:
         for_sale: "Produtos à venda"
         sold: "Produtos vendidos"
+      sale_badge: "À venda"
+      no_description: "Sem descrição disponível"
     show:
       mark_as_sold: "Marcar como vendido"
       unmark_as_sold: "Desmarcar como vendido"
@@ -105,3 +107,8 @@ pt-BR:
       long: "%d de %B de %Y"
       short: "%d/%m/%Y"
       default: "%d/%m/%Y" 
+  home:
+    banner: "Bem-vindo ao Garage Sale do Residencial Florença!"
+    welcome_message: "Descubra tesouros únicos dos seus vizinhos. Esta garagem virtual é feita para todos do condomínio—fácil, divertida e segura!"
+    browse_items: "Ver Itens"
+    see_all_products: "Ver Todos os Produtos" 

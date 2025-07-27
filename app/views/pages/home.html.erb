@@ -1,144 +1,56 @@
 <% content_for :title, t('app.title') %>
 
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <!-- Hero Section -->
-  <div class="text-center mb-12">
-    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-      <%= t('app.title') %>
+<div class="w-full px-0 py-0">
+  <!-- Full-width Garage Sale Banner -->
+  <div class="w-full bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100 dark:from-yellow-900 dark:via-pink-900 dark:to-blue-900 shadow-2xl rounded-b-3xl pb-10 pt-8 px-4 md:px-0 text-center relative overflow-hidden">
+    <!-- Playful Garage Sale SVG Illustration -->
+    <div class="mx-auto mb-4 flex justify-center" style="max-width: 420px;">
+      <svg width="100%" height="140" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Garage -->
+        <rect x="60" y="60" width="300" height="60" rx="12" fill="#fff" stroke="#3B82F6" stroke-width="4"/>
+        <rect x="120" y="90" width="60" height="30" rx="6" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+        <rect x="240" y="90" width="60" height="30" rx="6" fill="#F59E0B" stroke="#D97706" stroke-width="2"/>
+        <!-- Roof -->
+        <polygon points="60,60 210,20 360,60" fill="#FBBF24" stroke="#F59E0B" stroke-width="4"/>
+        <!-- Sale sign -->
+        <rect x="20" y="30" width="60" height="28" rx="6" fill="#EF4444" stroke="#DC2626" stroke-width="2"/>
+        <text x="50" y="50" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">SALE</text>
+        <!-- Items -->
+        <ellipse cx="90" cy="120" rx="14" ry="8" fill="#A78BFA"/>
+        <rect x="320" y="110" width="24" height="16" rx="4" fill="#34D399"/>
+        <circle cx="370" cy="120" r="10" fill="#F472B6"/>
+        <!-- Balloons -->
+        <ellipse cx="370" cy="40" rx="12" ry="18" fill="#60A5FA"/>
+        <ellipse cx="390" cy="30" rx="10" ry="15" fill="#F472B6"/>
+        <rect x="368" y="58" width="4" height="18" rx="2" fill="#60A5FA"/>
+        <rect x="388" y="45" width="4" height="18" rx="2" fill="#F472B6"/>
+        <!-- Confetti -->
+        <circle cx="80" cy="30" r="3" fill="#F87171"/>
+        <circle cx="340" cy="30" r="3" fill="#FBBF24"/>
+        <circle cx="200" cy="40" r="3" fill="#34D399"/>
+      </svg>
+    </div>
+    <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 dark:text-white mb-3 flex flex-col items-center gap-1" style="letter-spacing: 1px;">
+      <span>🛒 <%= t('home.banner') %> 🏷️</span>
+      <span class="text-xl md:text-2xl mt-1">Find treasures, make memories!</span>
     </h1>
-    <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
-      Descubra produtos únicos e especiais em nossa garagem virtual. Cada item tem uma história para contar.
+    <p class="text-lg md:text-xl text-blue-700 dark:text-blue-200 mb-8 font-medium">
+      <%= t('home.welcome_message') %>
     </p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <%= link_to products_path, class: 'inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <%= link_to products_path, class: 'inline-flex items-center justify-center px-8 py-5 text-lg font-bold text-white bg-gradient-to-r from-pink-400 via-yellow-400 to-blue-500 rounded-full shadow-lg hover:scale-105 focus:ring-4 focus:ring-blue-300 dark:from-pink-600 dark:via-yellow-500 dark:to-blue-700 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.5rem; min-width: 200px;' do %>
+        <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
-        Ver Produtos
+        <span><%= t('home.browse_items') %></span>
       <% end %>
-      <% if user_signed_in? && current_user.admin? %>
-        <%= link_to new_product_path, class: 'inline-flex items-center justify-center px-6 py-3 text-base font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 focus:ring-4 focus:ring-blue-300 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800 dark:focus:ring-blue-800' do %>
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
-          Adicionar Produto
-        <% end %>
-      <% end %>
+      <%= link_to t('home.see_all_products'), products_path, class: 'inline-flex items-center justify-center px-8 py-5 text-lg font-bold text-blue-700 bg-white border-2 border-blue-300 rounded-full shadow hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 dark:bg-gray-900 dark:text-blue-200 dark:border-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.5rem; min-width: 200px;' %>
     </div>
-  </div>
-
-  <!-- Features Section -->
-  <div class="grid md:grid-cols-3 gap-8 mb-12">
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 mb-4 text-blue-600 bg-blue-100 rounded-lg dark:bg-blue-900 dark:text-blue-300">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-        </svg>
-      </div>
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Produtos Únicos</h3>
-      <p class="text-gray-600 dark:text-gray-400">Descubra itens especiais que você não encontra em qualquer lugar.</p>
-    </div>
-    
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 mb-4 text-green-600 bg-green-100 rounded-lg dark:bg-green-900 dark:text-green-300">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-      </div>
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Qualidade Garantida</h3>
-      <p class="text-gray-600 dark:text-gray-400">Todos os produtos são cuidadosamente selecionados e verificados.</p>
-    </div>
-    
-    <div class="text-center">
-      <div class="inline-flex items-center justify-center w-16 h-16 mb-4 text-purple-600 bg-purple-100 rounded-lg dark:bg-purple-900 dark:text-purple-300">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-        </svg>
-      </div>
-      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Contato Direto</h3>
-      <p class="text-gray-600 dark:text-gray-400">Entre em contato diretamente com o vendedor via WhatsApp.</p>
-    </div>
-  </div>
-
-  <!-- Recent Products Preview -->
-  <div class="mb-12">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Produtos Recentes</h2>
-      <%= link_to products_path, class: 'inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400' do %>
-        Ver todos
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
-      <% end %>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Sample Product Cards -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-        <div class="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-lg flex items-center justify-center">
-          <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Produto Exemplo</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Descrição breve do produto...</p>
-          <div class="flex items-center justify-between">
-            <p class="text-xl font-bold text-blue-600 dark:text-blue-400">R$ 99,90</p>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-              Disponível
-            </span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-        <div class="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-lg flex items-center justify-center">
-          <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Outro Produto</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Mais uma descrição interessante...</p>
-          <div class="flex items-center justify-between">
-            <p class="text-xl font-bold text-blue-600 dark:text-blue-400">R$ 149,90</p>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-              Vendido
-            </span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
-        <div class="w-full h-48 bg-gray-200 dark:bg-gray-700 rounded-t-lg flex items-center justify-center">
-          <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-        </div>
-        <div class="p-5">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Item Especial</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Um item muito especial e único...</p>
-          <div class="flex items-center justify-between">
-            <p class="text-xl font-bold text-blue-600 dark:text-blue-400">R$ 299,90</p>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-              Disponível
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Call to Action -->
-  <div class="bg-blue-50 dark:bg-gray-800 rounded-lg p-8 text-center">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pronto para descobrir?</h2>
-    <p class="text-gray-600 dark:text-gray-400 mb-6">Explore nossa coleção completa de produtos únicos e especiais.</p>
-    <%= link_to products_path, class: 'inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' do %>
-      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    <!-- Wavy divider for mobile-native feel -->
+    <div class="absolute left-0 right-0 bottom-0" style="height: 32px; pointer-events: none;">
+      <svg viewBox="0 0 480 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="32">
+        <path d="M0 16 Q120 32 240 16 T480 16 V32 H0 V16Z" fill="#fff" fill-opacity="0.7"/>
       </svg>
-      Explorar Produtos
-    <% end %>
+    </div>
   </div>
 </div> 

@@ -1,4 +1,4 @@
-<%= form_with(model: product, local: true, html: { class: 'max-w-2xl mx-auto space-y-6', multipart: true, data: { direct_upload: true } }) do |form| %>
+<%= form_with(model: product, local: true, html: { class: 'max-w-2xl mx-auto space-y-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border-4 border-pink-200 dark:border-pink-700 p-8', multipart: true, data: { direct_upload: true } }) do |form| %>
   <% if product.errors.any? %>
     <div class="flex p-4 mb-6 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
       <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -18,9 +18,10 @@
   
   <!-- Product Name -->
   <div class="mb-5">
-    <%= form.label :name, t('products.form.name'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+    <%= form.label :name, t('products.form.name'), class: 'block mb-2 text-lg font-bold text-blue-900 dark:text-white flex items-center gap-2' %>
+    <span class="text-pink-500">🛒</span>
     <%= form.text_field :name, 
-        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:name].any?}", 
+        class: "bg-gray-50 border-2 border-pink-200 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-pink-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:name].any?}", 
         placeholder: t('products.form.name_placeholder', default: 'Digite o nome do produto'), 
         required: true %>
     <% if product.errors[:name].any? %>
@@ -30,11 +31,12 @@
   
   <!-- Product Price -->
   <div class="mb-5">
-    <%= form.label :price, t('products.form.price'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+    <%= form.label :price, t('products.form.price'), class: 'block mb-2 text-lg font-bold text-blue-900 dark:text-white flex items-center gap-2' %>
+    <span class="text-yellow-400">⭐</span>
     <%= form.number_field :price, 
         step: '0.01', 
         min: '0', 
-        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:price].any?}", 
+        class: "bg-gray-50 border-2 border-yellow-200 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-yellow-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 #{'border-red-500 dark:border-red-500' if product.errors[:price].any?}", 
         placeholder: t('products.form.price_placeholder', default: '0.00'), 
         required: true %>
     <% if product.errors[:price].any? %>
@@ -44,9 +46,10 @@
   
   <!-- Product Details -->
   <div class="mb-5">
-    <%= form.label :details, t('products.form.details'), class: 'block mb-2 text-sm font-medium text-gray-900 dark:text-white' %>
+    <%= form.label :details, t('products.form.details'), class: 'block mb-2 text-lg font-bold text-blue-900 dark:text-white flex items-center gap-2' %>
+    <span class="text-green-500">📝</span>
     <%= form.rich_text_area :details, 
-        class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 trix-content #{'border-red-500 dark:border-red-500' if product.errors[:details].any?}", 
+        class: "bg-gray-50 border-2 border-green-200 text-gray-900 text-lg rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-green-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 trix-content #{'border-red-500 dark:border-red-500' if product.errors[:details].any?}", 
         placeholder: t('products.form.details_placeholder', default: 'Descreva o produto...') %>
     <% if product.errors[:details].any? %>
       <p class="mt-2 text-sm text-red-600 dark:text-red-500"><%= product.errors[:details].first %></p>
@@ -58,7 +61,8 @@
   
   <!-- Image Upload Section -->
   <div class="mb-5">
-    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <label class="block mb-2 text-lg font-bold text-blue-900 dark:text-white flex items-center gap-2">
+      <span class="text-purple-500">🖼️</span>
       <%= t('products.form.images', default: 'Imagens') %>
     </label>
     
@@ -159,9 +163,10 @@
   </div>
   
   <!-- Submit Button -->
-  <div class="flex justify-end">
+  <div class="flex justify-end mt-8">
     <%= form.submit t('products.form.submit'), 
-        class: 'text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' %>
+        class: 'text-white bg-gradient-to-r from-pink-400 via-yellow-400 to-blue-500 hover:scale-105 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-full text-lg px-8 py-5 text-center dark:from-pink-600 dark:via-yellow-500 dark:to-blue-700 dark:focus:ring-blue-800 transition-all',
+        style: 'min-width: 200px;' %>
   </div>
 <% end %>
 

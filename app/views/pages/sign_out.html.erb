@@ -1,4 +1,23 @@
-<div class="max-w-lg mx-auto bg-white rounded shadow p-8 mt-16 text-center">
-  <h1 class="text-2xl font-bold text-gray-800 mb-4"><%= t('devise.sessions.signed_out', default: 'Logout efetuado com sucesso.') %></h1>
-  <%= link_to t('app.title'), root_path, class: 'inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition' %>
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-lg w-full space-y-8">
+    <div class="text-center">
+      <div class="mx-auto h-16 w-16 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center mb-6 shadow-lg">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+        </svg>
+      </div>
+      <h1 class="text-4xl font-extrabold text-blue-800 dark:text-white mb-4 flex items-center justify-center gap-3">
+        <span>👋 <%= t('devise.sessions.signed_out', default: 'Logout efetuado com sucesso.') %></span>
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 font-medium mb-8">
+        Obrigado por usar nosso sistema!
+      </p>
+      <%= link_to root_path, class: 'inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg hover:scale-105 focus:ring-4 focus:ring-blue-300 dark:from-blue-600 dark:to-purple-700 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
+        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        <span>🏠 <%= t('app.title') %></span>
+      <% end %>
+    </div>
+  </div>
 </div> 

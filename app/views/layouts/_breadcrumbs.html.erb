@@ -1,107 +1,107 @@
-<nav class="hidden md:flex mb-6" aria-label="Breadcrumb">
-  <ol class="inline-flex items-center space-x-1 md:space-x-3">
+<nav class="hidden md:flex mb-8" aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-2 md:space-x-4">
     <li class="inline-flex items-center">
-      <%= link_to root_path, class: 'inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white' do %>
-        <svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+      <%= link_to root_path, class: 'inline-flex items-center text-lg font-bold text-blue-700 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-200 transition-colors' do %>
+        <svg class="w-5 h-5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"/>
         </svg>
-        <%= t('app.title') %>
+        <span>🏠 <%= t('app.title') %></span>
       <% end %>
     </li>
     <% if controller_name == 'products' %>
       <% if action_name == 'index' %>
         <li>
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%= t('products.index.title') %></span>
+            <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">🛒 <%= t('products.index.title') %></span>
           </div>
         </li>
       <% elsif action_name == 'show' %>
         <li>
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <%= link_to products_path, class: 'ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white' do %>
-              <%= t('products.index.title') %>
+            <%= link_to products_path, class: 'ms-1 text-lg font-bold text-blue-700 hover:text-blue-800 md:ms-2 dark:text-blue-300 dark:hover:text-blue-200 transition-colors' do %>
+              <span>🛒 <%= t('products.index.title') %></span>
             <% end %>
           </div>
         </li>
         <li aria-current="page">
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%= @product&.name %></span>
+            <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">👁️ <%= @product&.name %></span>
           </div>
         </li>
       <% elsif action_name == 'edit' %>
         <li>
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <%= link_to products_path, class: 'ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white' do %>
-              <%= t('products.index.title') %>
+            <%= link_to products_path, class: 'ms-1 text-lg font-bold text-blue-700 hover:text-blue-800 md:ms-2 dark:text-blue-300 dark:hover:text-blue-200 transition-colors' do %>
+              <span>🛒 <%= t('products.index.title') %></span>
             <% end %>
           </div>
         </li>
         <li>
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <%= link_to product_path(@product), class: 'ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white' do %>
-              <%= @product&.name %>
+            <%= link_to product_path(@product), class: 'ms-1 text-lg font-bold text-blue-700 hover:text-blue-800 md:ms-2 dark:text-blue-300 dark:hover:text-blue-200 transition-colors' do %>
+              <span>👁️ <%= @product&.name %></span>
             <% end %>
           </div>
         </li>
         <li aria-current="page">
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%= t('common.edit') %></span>
+            <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">✏️ <%= t('common.edit') %></span>
           </div>
         </li>
       <% elsif action_name == 'new' %>
         <li>
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <%= link_to products_path, class: 'ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white' do %>
-              <%= t('products.index.title') %>
+            <%= link_to products_path, class: 'ms-1 text-lg font-bold text-blue-700 hover:text-blue-800 md:ms-2 dark:text-blue-300 dark:hover:text-blue-200 transition-colors' do %>
+              <span>🛒 <%= t('products.index.title') %></span>
             <% end %>
           </div>
         </li>
         <li aria-current="page">
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%= t('products.index.new') %></span>
+            <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">✨ <%= t('products.index.new') %></span>
           </div>
         </li>
       <% end %>
     <% elsif controller_path.start_with?('admin/') %>
       <li>
         <div class="flex items-center">
-          <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
           </svg>
-          <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">Admin</span>
+          <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">👑 Admin</span>
         </div>
       </li>
       <% if controller_name == 'users' %>
         <li aria-current="page">
           <div class="flex items-center">
-            <svg class="rtl:rotate-180 w-4 h-4 text-gray-400 mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+            <svg class="rtl:rotate-180 w-5 h-5 text-gray-400 mx-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
             </svg>
-            <span class="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400"><%= t('admin.users.title', default: 'Administradores') %></span>
+            <span class="ms-1 text-lg font-bold text-gray-600 md:ms-2 dark:text-gray-300">👥 <%= t('admin.users.title', default: 'Administradores') %></span>
           </div>
         </li>
       <% end %>
