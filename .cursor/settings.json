@@ -1,0 +1,44 @@
+{
+  "rules": [
+    {
+      "title": "Code Style & Formatting",
+      "description": "All code and comments must be written in English only—no mixed-language content is allowed. Follow the Ruby Style Guide, Airbnb JavaScript Style Guide, Prettier, and RuboCop. Indentation must always be 2 spaces (never tabs). Code must be auto-formatted before commit. Use snake_case for files and variables, CamelCase for classes, and maintain Rails directory structure (e.g., models in app/models, controllers in app/controllers)."
+    },
+    {
+      "title": "Project Structure & Conventions",
+      "description": "Follow Rails conventions for naming files, classes, methods, and variables. All new features must include 100% unit test coverage, measured by SimpleCov or equivalent, with every new method/class covered and all logical branches tested. Place all new files in the appropriate Rails directory. Use Rails standards for business logic patterns (service objects, concerns, etc.). Integration and system tests are only required if explicitly requested."
+    },
+    {
+      "title": "Security & Data Handling",
+      "description": "Follow RuboCop rules for security. All credentials, API keys, and tokens must be stored using Rails credentials or environment variables. Never commit sensitive data to the repository or hardcode credentials/tokens. Always use strong parameters in controllers and sanitize all user input before processing."
+    },
+    {
+      "title": "Workflow & Collaboration",
+      "description": "Direct commits to main are allowed. Code reviews are not required. Each commit must address a single logical change and use clear, concise, and descriptive messages following community best practices. Push changes frequently to avoid large, hard-to-review commits."
+    },
+    {
+      "title": "Testing & Quality Assurance",
+      "description": "All code changes must include or update tests. All Ruby code must pass RuboCop with no offenses. All frontend JavaScript must pass Airbnb ESLint rules. Prettier must be used for formatting JS/TS files. The test suite must pass locally before pushing or merging. No code with failing tests or linter errors may be committed."
+    },
+    {
+      "title": "Documentation & Comments",
+      "description": "Document classes, methods, or features only when necessary, except for public APIs, which must always be documented. Keep README.md updated with any new setup or usage instructions. Write comments only to explain complex logic or non-obvious decisions. Do not restate what the code does if it is already clear. Use Rails recommendations for inline documentation."
+    },
+    {
+      "title": "Frontend/Backend Integration",
+      "description": "Follow existing project conventions for API structure. All new API endpoints must be namespaced and versioned (e.g., /api/v1/resource). Use RESTful conventions for resource naming and HTTP verbs. JSON must be used as the default data format unless otherwise required. All API responses must be consistent and documented."
+    },
+    {
+      "title": "Internationalization (i18n)",
+      "description": "All user-facing UI, including I18n keys and default locale, must use pt-BR only. Do not use English or other languages for user-facing text. All user-facing strings must use Rails I18n (t('...')) helpers. Add new locale keys to the appropriate pt-BR locale file and remove unused keys when refactoring. Follow Rails best practices for locale files and translations."
+    },
+    {
+      "title": "Accessibility & UX",
+      "description": "Accessibility is encouraged but not required. When possible, ensure interactive elements are keyboard accessible, use semantic HTML, and add ARIA attributes where appropriate. Test keyboard navigation for all new interactive components."
+    },
+    {
+      "title": "Extra Rules",
+      "description": "Always use frameworks, libraries, and gems defined in the project for any code generation or changes. Do not introduce new dependencies without explicit approval. For backend, follow Rails 8 standards and use available tools/gems. For frontend, follow standards of defined libraries, support both mobile native-like and desktop experiences, and respect the existing color theme. Any deviation from these rules must be documented and justified in the code or PR description."
+    }
+  ]
+} 
