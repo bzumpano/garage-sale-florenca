@@ -141,7 +141,7 @@
     <% end %>
     <!-- Action Buttons -->
     <div class="flex flex-col sm:flex-row gap-4 mt-6">
-      <% unless @product.sold? %>
+      <% unless true || @product.sold? %>
         <% whatsapp_number = ENV.fetch('WHATSAPP_NUMBER', '+5519992937811') %>
         <% formatted_price = number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %>
         <% message = "Olá, tenho interesse no #{@product.name} (#{request.original_url}) no valor de R$ #{formatted_price}" %>
