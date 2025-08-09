@@ -4,19 +4,58 @@
 <% content_for :meta_tags do %>
   <meta property="og:title" content="🛒 Venda de Garagem da Aurora - Residencial Florença">
   <meta property="og:description" content="Bem-vindos ao nosso brechó online! Encontre tesouros únicos com preços especiais. Produtos para toda a família no Residencial Florença. ✨">
-  <meta property="og:image" content="<%= request.base_url %>/icon.png">
+  <meta property="og:image" content="<%= request.base_url %>/home-banner-girl.png">
+  <meta property="og:image:width" content="400">
+  <meta property="og:image:height" content="400">
   <meta property="og:type" content="website">
   <meta property="og:url" content="<%= root_url %>">
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="🛒 Venda de Garagem da Aurora - Residencial Florença">
   <meta name="twitter:description" content="Bem-vindos ao nosso brechó online! Encontre tesouros únicos com preços especiais. Produtos para toda a família no Residencial Florença. ✨">
-  <meta name="twitter:image" content="<%= request.base_url %>/icon.png">
+  <meta name="twitter:image" content="<%= request.base_url %>/home-banner-girl.png">
 <% end %>
 
 <div class="w-full px-0 py-0">
+  <!-- Cartoon Girl Hero Image -->
+  <div class="w-full flex justify-center pt-4 pb-2 px-4 bg-gradient-to-b from-transparent via-white/20 to-transparent">
+    <div class="relative">
+      <!-- Desktop/Tablet Image with WebP support -->
+      <picture class="hidden sm:block">
+        <source srcset="/home-banner-girl.webp" type="image/webp">
+        <img 
+          src="/home-banner-girl.png" 
+          alt="Cute cartoon girl with garage sale items floating around - welcome to our online garage sale!" 
+          class="w-80 h-80 md:w-96 md:h-96 object-contain drop-shadow-2xl"
+          loading="eager"
+          width="400"
+          height="400"
+        />
+      </picture>
+      
+      <!-- Mobile Image with WebP support -->
+      <picture class="block sm:hidden">
+        <source srcset="/home-banner-girl-mobile.webp" type="image/webp">
+        <img 
+          src="/home-banner-girl-mobile.png" 
+          alt="Cute cartoon girl with garage sale items floating around - welcome to our online garage sale!" 
+          class="w-64 h-64 object-contain drop-shadow-2xl mx-auto"
+          loading="eager"
+          width="280"
+          height="280"
+        />
+      </picture>
+      
+      <!-- Floating sparkles animation around the girl -->
+      <div class="absolute top-4 left-4 text-2xl animate-bounce" style="animation-delay: 0.1s;">✨</div>
+      <div class="absolute top-8 right-6 text-xl animate-bounce" style="animation-delay: 0.3s;">🎈</div>
+      <div class="absolute bottom-12 left-8 text-lg animate-bounce" style="animation-delay: 0.5s;">💫</div>
+      <div class="absolute bottom-16 right-4 text-xl animate-bounce" style="animation-delay: 0.7s;">🌟</div>
+    </div>
+  </div>
+  
   <!-- Full-width Garage Sale Banner -->
-  <div class="w-full bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100 dark:from-yellow-900 dark:via-pink-900 dark:to-blue-900 shadow-2xl rounded-b-3xl pb-10 pt-8 px-4 md:px-0 text-center relative overflow-hidden">
+  <div class="w-full bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100 dark:from-yellow-900 dark:via-pink-900 dark:to-blue-900 shadow-2xl rounded-b-3xl pb-10 pt-6 px-4 md:px-0 text-center relative overflow-hidden">
     <!-- Playful Garage Sale SVG Illustration -->
     <div class="mx-auto mb-4 flex justify-center" style="max-width: 420px;">
       <svg width="100%" height="140" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +97,6 @@
         </svg>
         <span><%= t('home.browse_items') %></span>
       <% end %>
-      <%= link_to t('home.see_all_products'), products_path, class: 'inline-flex items-center justify-center px-8 py-5 text-lg font-bold text-blue-700 bg-white border-2 border-blue-300 rounded-full shadow hover:bg-blue-50 focus:ring-4 focus:ring-blue-300 dark:bg-gray-900 dark:text-blue-200 dark:border-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.5rem; min-width: 200px;' %>
     </div>
     <!-- Wavy divider for mobile-native feel -->
     <div class="absolute left-0 right-0 bottom-0" style="height: 32px; pointer-events: none;">
