@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[ show edit update destroy mark_as_sold unmark_as_sold ]
   before_action :authenticate_user!, except: [:index, :show]
   before_action :require_admin!, except: [:index, :show]
 

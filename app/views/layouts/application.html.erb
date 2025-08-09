@@ -69,12 +69,11 @@
               <i class="fas fa-sign-out-alt mr-2"></i>
               <%= t('app.logout') %>
             <% end %>
-          <%# 
-          else
-            = link_to new_user_session_path, class: 'inline-flex items-center px-4 py-2 text-lg font-bold text-white bg-pink-500 rounded-full shadow hover:bg-pink-600 focus:ring-4 focus:ring-pink-300 dark:bg-pink-700 dark:hover:bg-pink-800 dark:focus:ring-pink-800 transition-all' do
-              %i.fas.fa-sign-in-alt.mr-2
-              = t('app.login')
-          %>
+          <% else %>
+            <%= link_to new_user_session_path, class: 'inline-flex items-center px-4 py-2 text-lg font-bold text-white bg-pink-500 rounded-full shadow hover:bg-pink-600 focus:ring-4 focus:ring-pink-300 dark:bg-pink-700 dark:hover:bg-pink-800 dark:focus:ring-pink-800 transition-all' do %>
+              <i class="fas fa-sign-in-alt mr-2"></i>
+              <%= t('app.login') %>
+            <% end %>
           <% end %>
         </div>
       </div>

@@ -42,7 +42,7 @@
     <% end %>
   </div>
 
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border-4 border-pink-200 dark:border-pink-700 p-6 mb-8 relative overflow-hidden">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border-4 border-pink-200 dark:border-pink-700 p-6 mb-8 relative">
     <!-- Product Images Carousel -->
     <% if @product.images.attached? %>
       <div class="relative mb-6">
@@ -140,39 +140,47 @@
       </div>
     <% end %>
     <!-- Action Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 mt-6">
+    <div class="flex flex-col sm:flex-row flex-wrap gap-4 mt-6 w-full">
       <% unless true || @product.sold? %>
         <% whatsapp_number = ENV.fetch('WHATSAPP_NUMBER', '+5519992937811') %>
         <% formatted_price = number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %>
         <% message = "Olá, tenho interesse no #{@product.name} (#{request.original_url}) no valor de R$ #{formatted_price}" %>
-        <%= link_to "https://wa.me/#{whatsapp_number.gsub(/\D/, '')}?text=#{ERB::Util.url_encode(message)}", target: "_blank", class: 'inline-flex items-center justify-center px-8 py-5 text-lg font-bold text-white bg-green-600 rounded-full shadow-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
+        <%= link_to "https://wa.me/#{whatsapp_number.gsub(/\D/, '')}?text=#{ERB::Util.url_encode(message)}", target: "_blank", class: 'flex-shrink-0 inline-flex items-center justify-center px-8 py-5 text-lg font-bold text-white bg-green-600 rounded-full shadow-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
           <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
           </svg>
-          <span><%= t('products.show.whatsapp_button') %></span>
+          <span>💬 <%= t('products.show.whatsapp_button') %></span>
         <% end %>
       <% end %>
       <% if user_signed_in? && current_user.admin? && !@product.sold? %>
-        <%= link_to edit_product_path(@product), class: 'inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-blue-700 rounded-full shadow-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
+        <%= link_to edit_product_path(@product), class: 'flex-shrink-0 inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-blue-700 rounded-full shadow-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
           <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
           </svg>
-          <span><%= t('common.edit') %></span>
+          <span>✏️ <%= t('common.edit') %></span>
         <% end %>
-        <button id="delete-product-btn" class="inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-red-600 rounded-full shadow-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 transition-all" style="font-size: 1.25rem; min-width: 200px;">
+        
+        <%= link_to mark_as_sold_product_path(@product), data: { turbo_method: :post }, class: 'flex-shrink-0 inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 rounded-full shadow-lg hover:scale-105 focus:ring-4 focus:ring-green-300 dark:from-green-600 dark:to-emerald-700 dark:focus:ring-green-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>✅ Marcar como Vendido</span>
+        <% end %>
+        
+        <button id="delete-product-btn" class="flex-shrink-0 inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-red-600 rounded-full shadow-lg hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 transition-all" style="font-size: 1.25rem; min-width: 200px;">
           <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
           </svg>
-          <span><%= t('common.delete') %></span>
+          <span>🗑️ <%= t('common.delete') %></span>
         </button>
       <% end %>
       <% if user_signed_in? && current_user.admin? && @product.sold? %>
-        <button id="unmark-as-sold-btn" class="inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-gray-600 rounded-full shadow-lg hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800 transition-all" style="font-size: 1.25rem; min-width: 200px;">
+        <%= link_to unmark_as_sold_product_path(@product), data: { turbo_method: :post }, class: 'flex-shrink-0 inline-flex items-center px-8 py-5 text-lg font-bold text-white bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-lg hover:scale-105 focus:ring-4 focus:ring-gray-300 dark:from-gray-600 dark:to-gray-700 dark:focus:ring-gray-800 transition-all', style: 'font-size: 1.25rem; min-width: 200px;' do %>
           <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
-          <span><%= t('products.show.unmark_as_sold') %></span>
-        </button>
+          <span>🔄 <%= t('products.show.unmark_as_sold', default: 'Remarcar como Disponível') %></span>
+        <% end %>
       <% end %>
     </div>
   </div>
@@ -220,13 +228,20 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Mark as sold functionality
+function initializeProductButtons() {
+  // Get all buttons and modal elements
   const markAsSoldBtn = document.getElementById('mark-as-sold-btn');
   const unmarkAsSoldBtn = document.getElementById('unmark-as-sold-btn');
+  const deleteProductBtn = document.getElementById('delete-product-btn');
   const modal = document.getElementById('confirm-modal');
   const modalMessage = document.getElementById('modal-message');
   const confirmActionBtn = document.getElementById('confirm-action-btn');
+
+  console.log('Initializing product buttons:', {
+    deleteBtn: !!deleteProductBtn,
+    modal: !!modal,
+    confirmBtn: !!confirmActionBtn
+  });
 
   if (markAsSoldBtn) {
     markAsSoldBtn.addEventListener('click', function(e) {
@@ -255,28 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       };
       
-      // Show modal - try multiple approaches for mobile compatibility
-      // First try Flowbite's global API
-      if (typeof window.Modal !== 'undefined') {
-        const modalInstance = new window.Modal(modal);
-        modalInstance.show();
-      } else {
-        // Fallback: show modal manually with better mobile support
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        
-        // Ensure modal is visible on mobile
-        modal.style.display = 'flex';
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.right = '0';
-        modal.style.bottom = '0';
-        modal.style.zIndex = '9999';
-        
-        // Prevent body scroll on mobile
-        document.body.style.overflow = 'hidden';
-      }
+      showModal();
     });
   }
 
@@ -307,28 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       };
       
-      // Show modal - try multiple approaches for mobile compatibility
-      // First try Flowbite's global API
-      if (typeof window.Modal !== 'undefined') {
-        const modalInstance = new window.Modal(modal);
-        modalInstance.show();
-      } else {
-        // Fallback: show modal manually with better mobile support
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        
-        // Ensure modal is visible on mobile
-        modal.style.display = 'flex';
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.right = '0';
-        modal.style.bottom = '0';
-        modal.style.zIndex = '9999';
-        
-        // Prevent body scroll on mobile
-        document.body.style.overflow = 'hidden';
-      }
+      showModal();
     });
   }
 
@@ -336,12 +309,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const closeModalBtn = document.getElementById('close-modal-btn');
   const cancelModalBtn = document.querySelector('[data-modal-hide="confirm-modal"]');
   
+  // Universal modal hide function
   function hideModal() {
     if (typeof window.Modal !== 'undefined') {
       const modalInstance = new window.Modal(modal);
       modalInstance.hide();
     } else {
-      // Manual hide
       modal.classList.add('hidden');
       modal.classList.remove('flex');
       modal.style.display = 'none';
@@ -364,14 +337,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Universal modal show function
+  function showModal() {
+    if (typeof window.Modal !== 'undefined') {
+      const modalInstance = new window.Modal(modal);
+      modalInstance.show();
+    } else {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.style.display = 'flex';
+      modal.style.position = 'fixed';
+      modal.style.top = '0';
+      modal.style.left = '0';
+      modal.style.right = '0';
+      modal.style.bottom = '0';
+      modal.style.zIndex = '9999';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
   // Delete product functionality
-  const deleteProductBtn = document.getElementById('delete-product-btn');
   if (deleteProductBtn) {
     deleteProductBtn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      
-      console.log('Delete button clicked');
       
       // Set delete styling (red button)
       confirmActionBtn.className = 'text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800';
@@ -392,36 +381,19 @@ document.addEventListener('DOMContentLoaded', function() {
           if (response.ok) {
             window.location.href = '<%= products_path %>';
           }
+        }).catch(error => {
+          console.error('Error deleting product:', error);
+          alert('Erro ao excluir o produto. Tente novamente.');
         });
       };
       
-      // Show modal - try multiple approaches for mobile compatibility
-      console.log('Attempting to show modal');
-      
-      // First try Flowbite's global API
-      if (typeof window.Modal !== 'undefined') {
-        console.log('Using Flowbite Modal API');
-        const modalInstance = new window.Modal(modal);
-        modalInstance.show();
-      } else {
-        console.log('Using manual modal display');
-        // Fallback: show modal manually with better mobile support
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        
-        // Ensure modal is visible on mobile
-        modal.style.display = 'flex';
-        modal.style.position = 'fixed';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.right = '0';
-        modal.style.bottom = '0';
-        modal.style.zIndex = '9999';
-        
-        // Prevent body scroll on mobile
-        document.body.style.overflow = 'hidden';
-      }
+      showModal();
     });
   }
-});
+}
+
+// Initialize on both DOMContentLoaded and Turbo events
+document.addEventListener('DOMContentLoaded', initializeProductButtons);
+document.addEventListener('turbo:load', initializeProductButtons);
+document.addEventListener('turbo:render', initializeProductButtons);
 </script>
