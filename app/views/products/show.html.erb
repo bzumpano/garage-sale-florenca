@@ -10,7 +10,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:type" content="product">
     <meta property="og:url" content="<%= product_url(@product) %>">
-    <meta property="og:site_name" content="Garage Sale Florença">
+    <meta property="og:site_name" content="Venda de Garagem da Aurora">
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<%= @product.name %> - R$ <%= number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %>">
@@ -23,7 +23,7 @@
     <meta property="og:description" content="<%= truncate(@product.details.to_plain_text, length: 200) %>">
     <meta property="og:type" content="product">
     <meta property="og:url" content="<%= product_url(@product) %>">
-    <meta property="og:site_name" content="Garage Sale Florença">
+    <meta property="og:site_name" content="Venda de Garagem da Aurora">
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="<%= @product.name %> - R$ <%= number_to_currency(@product.price, unit: '', separator: ',', delimiter: '.') %>">

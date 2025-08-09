@@ -1,6 +1,6 @@
 pt-BR:
   app:
-    title: "Garage Sale Florença"
+    title: "Venda de Garagem da Aurora"
     login: "Entrar"
     logout: "Sair"
   flash:
@@ -108,7 +108,7 @@ pt-BR:
       short: "%d/%m/%Y"
       default: "%d/%m/%Y" 
   home:
-    banner: "Bem-vindo ao Garage Sale do Residencial Florença!"
-    welcome_message: "Descubra tesouros únicos dos seus vizinhos. Esta garagem virtual é feita para todos do condomínio—fácil, divertida e segura!"
+    banner: "Bem-vindo a Venda de Garagem da Aurora!"
+    welcome_message: "Descubra tesouros únicos. Esta garagem virtual para todos do condomínio—fácil, divertida e segura!"
     browse_items: "Ver Itens"
     see_all_products: "Ver Todos os Produtos" 
