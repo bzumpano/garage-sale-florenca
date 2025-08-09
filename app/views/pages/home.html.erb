@@ -1,5 +1,19 @@
 <% content_for :title, t('app.title') %>
 
+<%# Homepage-specific meta tags for better social sharing %>
+<% content_for :meta_tags do %>
+  <meta property="og:title" content="🛒 Venda de Garagem da Aurora - Residencial Florença">
+  <meta property="og:description" content="Bem-vindos ao nosso brechó online! Encontre tesouros únicos com preços especiais. Produtos para toda a família no Residencial Florença. ✨">
+  <meta property="og:image" content="<%= request.base_url %>/icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= root_url %>">
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🛒 Venda de Garagem da Aurora - Residencial Florença">
+  <meta name="twitter:description" content="Bem-vindos ao nosso brechó online! Encontre tesouros únicos com preços especiais. Produtos para toda a família no Residencial Florença. ✨">
+  <meta name="twitter:image" content="<%= request.base_url %>/icon.png">
+<% end %>
+
 <div class="w-full px-0 py-0">
   <!-- Full-width Garage Sale Banner -->
   <div class="w-full bg-gradient-to-br from-yellow-100 via-pink-100 to-blue-100 dark:from-yellow-900 dark:via-pink-900 dark:to-blue-900 shadow-2xl rounded-b-3xl pb-10 pt-8 px-4 md:px-0 text-center relative overflow-hidden">

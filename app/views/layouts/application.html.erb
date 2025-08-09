@@ -8,13 +8,42 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Venda de Garagem da Aurora - encontre tesouros únicos em nossa venda de garagem! Produtos com preços especiais para toda a família.">
+    <meta name="keywords" content="brechó, venda de garagem, residencial florença, produtos usados, preços baixos">
+    <meta name="author" content="Venda de Garagem da Aurora">
+    
+    <!-- Open Graph Meta Tags for Social Media -->
+    <meta property="og:title" content="<%= content_for(:title) || 'Venda de Garagem da Aurora - Residencial Florença' %>">
+    <meta property="og:description" content="Venda de Garagem da Aurora - encontre tesouros únicos em nossa venda de garagem! Produtos com preços especiais para toda a família.">
+    <meta property="og:image" content="<%= request.base_url %>/icon.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta property="og:site_name" content="Venda de Garagem da Aurora">
+    <meta property="og:locale" content="pt_BR">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= content_for(:title) || 'Venda de Garagem da Aurora - Residencial Florença' %>">
+    <meta name="twitter:description" content="Venda de Garagem da Aurora - encontre tesouros únicos em nossa venda de garagem! Produtos com preços especiais para toda a família.">
+    <meta name="twitter:image" content="<%= request.base_url %>/icon.png">
+    
+    <!-- Additional Meta Tags for Mobile -->
+    <meta name="theme-color" content="#EC4899">
+    <meta name="msapplication-TileColor" content="#EC4899">
+    <meta name="apple-mobile-web-app-title" content="Venda de Garagem da Aurora">
+    <meta name="application-name" content="Venda de Garagem da Aurora">
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
     <%= yield :meta_tags %>
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon.png" type="image/png">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -28,7 +57,7 @@
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div class="flex items-center space-x-3">
           <%= link_to root_path, class: 'self-center text-3xl font-extrabold whitespace-nowrap text-blue-900 dark:text-white flex items-center gap-2' do %>
-            <img src="/icon.svg" alt="Logo" class="w-10 h-10 inline-block" />
+            <img src="/icon.png" alt="Logo" class="w-10 h-10 inline-block" />
             <span>Venda de Garagem da Aurora</span>
           <% end %>
         </div>

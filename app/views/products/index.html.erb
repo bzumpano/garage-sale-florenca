@@ -2,9 +2,25 @@
 
 <% content_for :title, t('products.index.title') %>
 
-<div class="mb-6">
-  <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2"><%= t('products.index.title') %></h1>
-  <p class="text-gray-600 dark:text-gray-400">Explore nossa coleção de produtos únicos</p>
+<%# Products index meta tags for better social sharing %>
+<% content_for :meta_tags do %>
+  <meta property="og:title" content="🛒 <%= t('products.index.title') %> - Venda de Garagem da Aurora">
+  <meta property="og:description" content="Explore nossa coleção de produtos únicos! Encontre tesouros com preços especiais no brechó online do Residencial Florença. 🏷️✨">
+  <meta property="og:image" content="<%= request.base_url %>/icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= products_url %>">
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🛒 <%= t('products.index.title') %> - Venda de Garagem da Aurora">
+  <meta name="twitter:description" content="Explore nossa coleção de produtos únicos! Encontre tesouros com preços especiais no brechó online do Residencial Florença. 🏷️✨">
+  <meta name="twitter:image" content="<%= request.base_url %>/icon.png">
+<% end %>
+
+<div class="mb-8">
+  <h1 class="text-4xl font-extrabold text-blue-800 dark:text-white mb-3 flex items-center gap-3">
+    <span>✨ <%= t('products.index.title') %></span>
+  </h1>
+  <p class="text-xl text-gray-600 dark:text-gray-400 font-medium">Explore nossa coleção de produtos únicos</p>
 </div>
 
 <% if user_signed_in? && current_user.admin? %>
